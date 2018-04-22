@@ -8,33 +8,241 @@
       text{
         cursor: pointer;
       }
+      table{
+      	border-collapse: collapse;
+      }
+      th{
+      	background: #333;
+      	color: white;
+      	font-weight: bold;
+      	cursor: s-resize;
+      }
+      td,th{
+      	padding: 10px;
+      	border: 1px solid #ccc;
+      	text-align: left;
+      }
+      p{
+        margin:0;
+      }
+
     </style>
 </head>
 
 <body>
+  <center>
   <h1> Welcome to our page to learn about whisky!</h1>
-  <p> Below is the map of whisky, hover your cursor over the country to see the interesting fact of whisky!</p>
+  </center>
+  <h2> What is whisky? Is it "Whisky"? Or "Whiskey?"</h2>
+  <p> Whisky originates from Gaels (Which are the ancestors of Irish and Scottish) and means “Life of Water”. It is a type of spirit with more than 40% alcohol by volume. Traditional whisky from Scotland and Ireland distilled from malted barley or grain, while American style whisky, Bourbon, makes primarily from corn. As the art of whisky spread around the world, there are more people outside of Scotland and Ireland started to make whisky. "Whisky" is Scotish spelling, while "Whiskey" is Irish spelling. Although you may see many bottles from Scotland and other countries printed "Whisky", both spelling are refering to the same beverage in modern use.</p>
+
+  <h2>Why drink whisky?</h2>
+  <p>One may ask what makes whisky different other spirit? What makes whisky different with other spirit? Flavor! For example: Scotch whisky requires the spirit to make with 100% malted barley and to mature in oak at least for three years. The unique flavor of each whisky, we called it character, developed in the oak barrel that makes everybody’s favorite whisky.</p> <br>
+  <p>For example, “peaty” is a unique character to Scotch whisky, it describes the smoky aroma in whisky, sometimes you may receive the flavor as charcoal aroma. Some of the Scotch whisky from Islay in Scotland, such as Ardbeg, Bowmore, and Laphroaig, are famous peaty whisky.</p>
+
+  <h2>Don't know how to pick a bottle? No Problem!</h2>
+  <p>In recent years, more people started to drink whisky that drinking whisky becomes middle class trend. However many new whisky drinkers are confused which bottle of whisky to buy when they ran into BevMo or Total Wine whisky shelf. In here, we would like to educate readers to choose whisky based on the review score, flavor character, country of origin, and price range.</p><br>
+
+  <p>We are glad that you are visiting our website, so that we can teach you a easier way to pick a bottle.</p>
+  <br><br>
+  <hr>
+  <h2>How does this website help?</h2>
+  <p>We aim to help new whisky drinkers like you! We will first introduce the countries that produce whisky and interesting facts from them. Then, we will go over the main characters of whisky. And finally, we can recommend a list of whiskies(whiskeys)
+
+  <h2>First, learn the countries that make whisky(Or Whiskey)</h2>
+  <p> Let's begin learn about the countries that make whisky(whiskey).</p><br>
+  
+
+  <center><h1>Lession 1: The World of Whisky, Whiskey, and Bourbon</h1></center>
+
+  <h2>How does whisky from different countries differ?</h2>
+  <p>The character of different bottles of whisky(whiskey) differ with the origin of ingredients and method. Think of your favourite fruit, strawberry, which tastes different if it is grow in California or in Japan. Same as the ingredients of whisky(whiskey): the malt, water, or even rye or corn (depends what kind of whisky) have different taste that builds the unique character in the bottle, along with different methods and legal requirements that makes every bottle of whisky(whiskey) taste different!</p>
+
+  <center>
+  <br>
+  <p>Below is the map of whisky, hover your cursor over the country to see the interesting fact of whisky!</p>
+  </center>
+
+  <center>
   <div id="map"></div>
-  <div id="summary"></div>
-  <h2> Our database </h2>
-  <p> Here is the average score of each country.</p>
-  <div id="barchart"></div>
-  <h2> A bottle of whisky for you?</h2>
-  <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p>
-  <div id="dropdown"></div>
-  <div id="wheel"></div>
-  <div id="suggestion"></div>
+  <div id="country_name">
+    <table>
+      <p>
+        The Countries that Make Whisky(Whiskey)
+      </p>
+      <tr>
+        <td>Scotland (United Kingdom)</td>
+        <td>United States</td>
+        <td>Japan</td>
+        <td>France</td>
+        <td>Netherlands</td>
+        <td>Australia</td>
+      </tr>
+      <tr>
+        <td>England (United Kingdom)</td>
+        <td>Ireland</td>
+        <td>India</td>
+        <td>Sweden</td>
+        <td>Belgium</td>
+        <td>South Africa</td>
+      </tr>
+      <tr>
+        <td>Wales (United Kingdom)</td>
+        <td>Canada</td>
+        <td>Taiwan</td>
+        <td>Finland</td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+    </div>
+    <br>
+    <br>
+    <div id="summary" style="width: 1000px;height: 300px;background-color: pink;"></div>
+    <br><br>
+    <hr>
+    <h1>Lession 2: The Soul</h1>
+    <p>The unique flavor in each bottle of whisky(whiskey) is called "character". We grouped all characters into 9 characters. </p>
+    <br>
+    <div id="characters">
+    <table>
+      <tr>
+        <th>Characters</th>
+        <th>Descriptions</th>
+        <th>Examples</th>
+      </tr>
+      <tr>
+        <td>Fruity</td>
+        <td>Fruity describes when whisky(whiskey) has fruity notes, such as apple and tropical fruit flavors. Longer fermentation times usually yields to more fruity characteristics.</td>
+        <td><b>Scotland</b>: Glenfiddich 12 year. 
+          <br>Expect: Apple and pear with creamy texture.</td>
+      </tr>
+      <tr>
+        <td>Honey</td>
+        <td>Honey describes when whisky(whiskey) has honey note. Interestingly, most of the whiskies(whiskeys) is also malty if it has honey note. </td>
+        <td><b>Ireland</b>: Kibeggan Traditional Irish Whiskey. 
+          <br>Expect: An elegant, sweet, and malty blend.</td>
+      </tr>
+      <tr>
+        <td>Spicy</td>
+        <td>You may expect 5 types of spicy note:
+          <br>1- Spicies like salt, nutmeg or ginger
+          <br>2- Hot or peppery notes like chili or black pepper
+          <br>3- warming spices like cinnamon, clove, saffron
+          <br>4- Salty note
+          <br>5 - Mint or menthol notes</td>
+        <td><b>Scotland</b>: Talisker 10 year.
+          <br>Expect: Salty, pepper, smoky.</td>
+      </tr>
+      <tr>
+        <td>Floral</td>
+        <td>You may expect a light note of your favourite flower in your glass of whisky(whiskey)!</td>
+        <td><b>Japan</b>: Suntory Hakushu Distiller's Reserve
+          <br>Expect: Floral, gently smoky, and fruity flavour.</td>
+      </tr>
+      <tr>
+        <td>Malty</td>
+        <td>Malty describes the note of malted barley</td>
+        <td><b>Japan</b>: Yamazaki Mizunara
+          <br>Expect: Malty, fruity, spciy</td>
+      </tr>
+      <tr>
+        <td>Nutty</td>
+        <td>You may expect the flavor from nuts. Nutty notes usually come from sherry cask maturation.</td>
+        <td><b>Scotland</b>: Springbank 11 year Local Bottling Note
+          <br>Expect: Nutty like almonds, hazelnuts, and walmuts, rich and buttery finish</td>
+      </tr>
+      <tr>
+        <td>Winey</td>
+        <td>Winey does not necessary mean the flavor influenced from graph juice or wine, but the reminiscent of wine, perhaps developed from maturation because the mask was previously filled with wine.</td>
+        <td><b>Scotland</b>: Glenmorangie Nectar d'Or
+          <br>Expect: Almon, honey, vanilla, ginger, and clove spice. And some flavor of lemongrass from Sauvignon Blanc.</td>
+      </tr>
+      <tr>
+        <td>Smoky</td>
+        <td>Because single-malt whisky is made from malted barley, which is heated to dry out and to stop the germination process. The fuel(Mostly peat) is burned to infuse the smoky flavor into the grain, and thus develop the smoky flavor into whisky.</td>
+        <td><b>Taiwan</b>: Kavalan Distillery Reserve Peaty Cask
+          <br>Expect: Some honey and floral note with peat aroma, also along with tropical fruits like kiwi, guava, coconut and melon.
+        </td>
+      </tr>
+      <tr>
+        <td>Very Smoky</td>
+        <td>The peat used by some distilleries is significantly more smokier than others. For example, Islay in Scotland is very famous for very smoky(as well as very peaty) whisky.</td>
+        <td><b>Scotland</b>: Laphroaig 10 year
+          <br>Expect: Very smoky and peaty, some salt, iodine, seaweed, and pear
+        </td>
+      </tr>
+    </table>
+    </div>
+    <br><br>
+    <hr>
+    <h1> Lesson 3: The Algorithm</h1></center>
+    <p>Step 1: Choose your favourite country<br>
+       Step 2: Choose your desired character<br>
+       Step 3: Choose a price range<br>
+       Step 4: Pick a bottle from the list<br>
+       (If you still confused from the list, you may pick the bottle with the highest score)
+    </p>
+    <br><br>
+    <hr>
+    <center>
+    <h1>Graduation Prize: Your Data Scientist</h1></center>
+    <h2> Our database </h2>
+    <p> Here is the average score of each country.</p>
+  	<div id="barchart"></div>
+    <h2> A bottle of whisky for you?</h2>
+    <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p><br><br>
+    <div id="dropdown" style="height:100px;"></div>
+    <center>
+    <div id="wheel" style="height:500px;"></div>
+    <div id="suggestion"></div>
+  </center>
   <script type="text/javascript">
+  	// To set a queue to load files, then call doTasks
     d3.queue()
+      .defer(d3.json, "worldmap.json")
       .defer(d3.json, "whiskymap.json")
+      .defer(d3.tsv,"whisky_fact.tsv")
       .defer(d3.csv, "whisky_clear.csv")
       .await(doTasks);
 
-    function doTasks(error, whisky_map, whisky_data){
-      if (error) throw error;
+    // doTasks is the scripts to visualize the data
+    function doTasks(error, worldmap, whisky_map, whisky_fact, whisky_data){
+    	if (error) throw error;
+      	// Catch error
 
-      // Below is the code for the map and interaction
-      var w = 1000,
+    	/*
+    	------------------------------------------------------------------
+    	---------------------Next Chunk Below-----------------------------
+    	------------------------------------------------------------------
+    	*/
+      	// data for country summary set up
+        whisky_fact.forEach(function(d){
+          d.Country = d.Country;
+          d.Fact = d.Fact;
+        })
+
+
+      	// data database set up
+        whisky_data.forEach(function(d){
+            d.whisky = d.whisky;
+            d.score = +d.score;
+            d.review = +d.review;
+            d.cost = +d.cost;
+            d.class = d.class;
+            d.cluster = d.cluster;
+            d.country = d.country;
+            d.type = d.type;
+        });
+
+        /*
+    	------------------------------------------------------------------
+    	---------------------Next Chunk Below-----------------------------
+    	------------------------------------------------------------------
+        */
+
+      	// Below is the code for the map and interaction
+      	var w = 1000,
             h = 400;
 
         var margin = {top:5, right:5, bottom:100, left:100};
@@ -50,19 +258,37 @@
 
         var path = d3.geoPath().projection(d3.geoEquirectangular());
 
-        var summ = d3.select("#summary")
-                    .append("svg")
-                    .attr("width",w)
-                    .attr("height",h)
-                    .attr('transform', 'translate(' + w/2 +','+ h/2 + ')')
-                    .append("g");
+        var summ = d3.select("#summary");
 
-        g.selectAll("path")
+
+        
+        g.selectAll("#basemap")
+          .data(worldmap.features)
+          .enter()
+          .append("path")
+          .attr("id","basemap")
+          .attr("d",path)
+          .style("fill","gray");
+          
+
+        g.selectAll(".whisky")
+          .append("g")
            .data(whisky_map.features)
            .enter()
            .append("path")
            .attr("d",path)
-           .attr("id", function(d){return d.properties.sovereignt;})
+           .attr("class","whisky")
+           .attr("id", function(d){
+              var country = d.properties.sovereignt;
+              var id;
+              if (country == "United Kingdom")
+                id = "uk";
+              else if (country == "United States of America")
+                id = "usa";
+              else
+                id = country.substring(0,3).toLowerCase();
+              return id;
+           })
            .style("fill","teal")
            ;
 
@@ -76,36 +302,49 @@
           console.log("It works!");
           console.log(mouseoverCountry);
 
-          
-          var xPos = parseFloat(d3.select(this).attr("x"));
-          var yPos = parseFloat(d3.select(this).attr("y"));
+          var id_country;
 
-          xPos = 100;
-          yPos = 100;
-
-          //console.log("("+xPos+","+yPos+")");
-          /*
-          g.append("text")
-             .attr("id","tooltip")
-             .attr("x",xPos)
-             .attr("y",yPos)
-             .attr("text-anchor", "middle")
-             .attr("font-family", "sans-serif")
-             .attr("font-size", "11px")
-             .attr("font-weight", "bold")
-             .attr("fill", "black")
-             .text(map.properties.sovereignt);
-			*/
+          if (mouseoverCountry == "United Kingdom")
+            id_country = "uk";
+          else if (mouseoverCountry == "United States of America")
+            id_country = "usa";
+          else
+           id_country = mouseoverCountry.substring(0,3).toLowerCase();
+          console.log(id_country)
           
-          summ.append("text")
-             .attr("id","summary")
-             .attr("x",xPos)
-             .attr("y",yPos)
-             .attr("text-anchor", "middle")
-             .attr("font-family", "sans-serif")
-             .attr("font-size", "14px")
-             .attr("fill", "black")
-             .text(mouseoverCountry);
+          
+          d3.selectAll("path#"+id_country)
+            .transition().style("fill","red");
+
+          console.log(whisky_fact);
+
+          var country_summ = whisky_fact.filter(function(d){
+            var choice;
+            if(mouseoverCountry == "United Kingdom")
+              choice = "Scotland";
+            else
+              choice = mouseoverCountry;
+
+            return d.Country == choice;
+          });
+
+          console.log(country_summ);
+
+
+
+
+          summ.selectAll("#detail")
+             .data(country_summ)
+             .enter()
+             .append("p")
+             //.attr("id","summary")
+             .attr("x",0)
+             .attr("id","detail")
+             //.attr("text-anchor", "middle")
+             //.attr("font-family", "sans-serif")
+             //.attr("font-size", "14px")
+             //.style("color", "black")
+             .text(function(d){return d.Fact+"\n";});
             
                
         });
@@ -113,35 +352,21 @@
         country.on("mouseout", function(map){
           console.log("See you!");
           d3.select("#tooltip").remove();
-          d3.select("#summary").selectAll("text")
+          d3.select("#summary").selectAll("p")
             .remove();
+          d3.selectAll(".whisky")
+            .transition().style("fill","teal");
+
         })
 
         // Above is the code for the map and interaction
       
-    	/*
-		------------------------------------------------------------------
-		---------------------Next Chunk Below-----------------------------
-		------------------------------------------------------------------
-     	*/
+      /*
+    ------------------------------------------------------------------
+    ---------------------Next Chunk Below-----------------------------
+    ------------------------------------------------------------------
+      */
 
-    	// data set up
-      	whisky_data.forEach(function(d){
-            d.whisky = d.whisky;
-            d.score = +d.score;
-            d.review = +d.review;
-            d.cost = +d.cost;
-            d.class = d.class;
-            d.cluster = d.cluster;
-            d.country = d.country;
-            d.type = d.type;
-        });
-
-      	/*
-		------------------------------------------------------------------
-		---------------------Next Chunk Below-----------------------------
-		------------------------------------------------------------------
-      	*/
 
     	// Below is the code for bar chart
 
@@ -285,11 +510,38 @@
 		------------------------------------------------------------------
       */
 
-      // Below is the code for suggestion and interaction
+      /*
+		Below is the code for suggestion and interaction
+		Using <div> with id="dropdown", "wheel", and "suggestion"
+
+		For id="dropdown" is the dropdown list for user to choose a country
+
+		For id="wheel" is a pie-chart-like-wheel on a svg. The pie-chart-like-wheel
+		is called "Character wheel", it is inspired from the character wheel of wine,
+		designed in UC Davis. The idea is that having the user to use key-word and related
+		color to choose a character.
+
+		For id="suggestion", after the user have choose a country and a character, the
+		code will generate a table of list of suggested whisky based on country and
+		character chose by user. The default country is "Scotland". When user choose a
+		character without clicking country, the code will generate the result based on
+		Scotland and the corresponding character.
+      */
+
+      // The setup for the character wheel
         var character = [
-          {"flavor":"Fruity", "color":"green","share":1},
-          {"flavor":"Smoky", "color":"gray","share":1}
+          {"flavor": "Fruity", "color" : "green","share" :1},
+          {"flavor": "Honey", "color" : "#ffbf00","share" :1},
+          {"flavor": "Spicy", "color" : "#ff4000", "share" :1},
+          {"flavor": "Floral", "color" : "#00ba00","share" :1},
+          {"flavor": "Malty", "color" : "#ca5900", "share" :1},
+          {"flavor": "Nutty", "color" : "brown","share" :1},
+          {"flavor": "Winey", "color" : "#bf00ff","share" :1},
+          {"flavor": "Smoky", "color":"#867979","share" :1},
+          {"flavor": "Very Smoky", "color" : "#52527a","share" :1.5},
         ]; // Text and color set up for the wheel
+
+        var col = ["whisky","score","review","cost","cluster","class","country","type"];
 
         // Canvas size set up
         var margin = {top:5, right:5, bottom:100, left:100};
@@ -299,7 +551,7 @@
         var w_suggestion = 1200,
             h_suggestion = 800;
 
-        // Set up #wheel
+        // The following code is for set up character wheel on id="wheel"
         var wheel = d3.select("#wheel")
               .append("svg")
               .attr("width",w_wheel)
@@ -328,16 +580,17 @@
 
         arcs.append("text")
             .attr("transform", function(d){return "translate(" + path.centroid(d) + ")";})
-            .attr("dy",".35em")
             .style("text-anchor","middle")
             .text(function(d){return d.data.flavor;})
             .style("stroke","white");
+        // The above code is for set up character wheel on id="wheel"
 
         // Set up the table on #suggestion
         var suggestion = d3.select("#suggestion")
                    .attr("width",w_suggestion)
                    .attr("height",h_suggestion);
 
+        // Function to generate a table after user has chosen country and character
         var tabulate = function(data,columns){
           var table = suggestion.append("table");
           var thead = table.append("thead");
@@ -366,62 +619,163 @@
                   .text(function(d){return d.value;});
 
           return table;
-        }
+        } // End function tablate
+
+
+        /* 
+        	On the column Cluster, from whisky_clear.csv, consists more than 1 character.
+        	filteredList is the function to match to cluster
+        */
+        var filteredList = function(dataset,country,choice){
+        	var filtered;
+
+        	if (choice == "Fruity")
+        		filtered =  dataset.filter(function(d){
+              					return (d.country == country && 
+              							d.cluster != "R0" &&
+              							d.cluster != "R1" &&
+              							d.cluster != "R2" &&
+              							d.cluster != "R3" &&
+              							d.cluster != "R4" &&
+              							d.cluster != "N")
+              				});
+        	else if (choice == "Honey")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && 
+        									(
+        										d.cluster == "A" ||
+        										d.cluster == "E" ||
+        										d.cluster == "G"
+        									)
+        								);
+        					});
+        	else if (choice == "Spicy")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && 
+        									(
+        										d.cluster == "A" ||
+        										d.cluster == "F" ||
+        										d.cluster == "G" ||
+        										d.cluster == "I" ||
+        										d.cluster == "J"
+        									)
+        								);
+        					});
+        	else if (choice == "Floral")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && 
+        									(
+        										d.cluster == "B" ||
+        										d.cluster == "C" ||
+        										d.cluster == "G" ||
+        										d.cluster == "H"
+        									)
+        								);
+        					});
+        	else if (choice == "Floral")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && 
+        									(
+        										d.cluster == "B" ||
+        										d.cluster == "C" ||
+        										d.cluster == "G" ||
+        										d.cluster == "H"
+        									)
+        								);
+        					});
+        	else if (choice == "Malty")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && 
+        									(
+        										d.cluster == "B" ||
+        										d.cluster == "E" ||
+        										d.cluster == "H" ||
+        										d.cluster == "J"
+        									)
+        								);
+        					});
+        	else if (choice == "Nutty")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && 
+        									(	
+        										d.cluster == "C" ||
+        										d.cluster == "I" 
+        									)
+        								);
+        					});
+        	else if (choice == "Winey")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "E");
+        					});
+        	else if (choice == "Smoky")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && 
+        									(	
+        										d.cluster == "F" ||
+        										d.cluster == "I" 
+        									)
+        								);
+        					});
+        	else if (choice == "Very Smoky")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "J");
+        					});
+        	return filtered;
+
+        } // End function getCluster
 
           
+        // To obtain the selection on the dropdown list
+        var dropdown_option = d3.nest().key(function(d){return d.country;})
+                    			.rollup(function(d){return d.length;})
+                    			.entries(whisky_data); 
 
-          var dropdown_option = d3.nest().key(function(d){return d.country;})
-                    .rollup(function(d){return d.length;})
-                    .entries(whisky_data); 
+        var selection = d3.select("#dropdown");
 
-          var selection = d3.select("#dropdown");
+        selection.append("select")
+                 .selectAll("option")
+                 .data(dropdown_option)
+                 .enter()
+                 .append("option")
+                 .attr("value",function(d){return d.key;})
+                 .text(function(d){return d.key;});
 
-          selection.append("select")
-               .selectAll("option")
-               .data(dropdown_option)
-               .enter()
-               .append("option")
-               .attr("value",function(d){return d.key;})
-               .text(function(d){return d.key;});
+        // Interaction for user to select country and flavor to filter
+        // Default selection to Scotland
+        var selectedCountry = "Scotland";
+        console.log(selectedCountry);
 
-          // Interaction for user to select country and flavor to filter
-          // Default selection to Scotland
-          var selectedCountry = "Scotland";
-          console.log(selectedCountry);
+        var selectedFlavor; // Declare selectedFlavor to store character
 
-          var selectedFlavor;
-
-          
-          selection.on("change",function(){
+        // Event when the drop down list is selected with country
+        selection.on("change",function(){
 
             selectedCountry = d3.select(this)
-                      .select("select")
-                      .property("value");
+                      			.select("select")
+                      			.property("value");
 
-            console.log(selectedCountry);
-
-            var result = whisky_data.filter(function(d){return d.country == selectedCountry;});
-
-            var table = tabulate(result,col);
-            table.selectAll("thead th")
-             .text(function(col){return col.charAt(0).toUpperCase()+col.substr(1);});
-          })
+            console.log(selectedCountry); // To delete later
+            
+        }) // End event on selecting country
 
 
-          wheel.selectAll(".slice").on("click",function(d){
+        wheel.selectAll(".slice").on("click",function(d){
             selectedFlavor = d.data.flavor;
-              //console.log(d.data.flavor);
-              //console.log(selectedCountry);
-              console.log(selectedFlavor);
-          });
-          //console.log("Outside is " + selectedFlavor);
+            //console.log(d.data.flavor);
+            console.log(selectedCountry); // To delete later
+            console.log(selectedFlavor); // To delete later
 
-          var result = whisky_data.filter(function(d){return d.country == selectedCountry;});
-          //console.log(result);
+            var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor);
+            // To remove the table if there is a table existed in id="suggestion"
+            d3.selectAll("#suggestion").selectAll("table").remove();
+            // To generate a table and rows
+            var table = tabulate(whisky_list,col);
+            // To add a table head
+            table.selectAll("thead th")
+             	   .text(function(col){return col.charAt(0).toUpperCase()+col.substr(1);});
+        }); // End event on selecting character
 
-
-          //console.log(result)
-          var col = ["whisky","score","review","cost","cluster","class","country","type"];
+          
 
           
 
