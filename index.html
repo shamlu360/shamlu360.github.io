@@ -25,6 +25,13 @@
       p{
         margin:0;
       }
+      img{
+        image-orientation:from-image;
+      }
+      div.intro_pic{
+        transform: rotate(90deg);
+      }
+      .country{font-size:14px; cursor: pointer;}
 
     </style>
 </head>
@@ -32,6 +39,10 @@
 <body>
   <center>
   <h1> Welcome to our page to learn about whisky!</h1>
+  <div class="intro_pic">
+    <br><br><br><br><br>
+    <img src="whisky_intro.jpg" style="width:30%; height: 30%" class="rotate180">
+  </div>
   </center>
   <h2> What is whisky? Is it "Whisky"? Or "Whiskey?"</h2>
   <p> Whisky originates from Gaels (Which are the ancestors of Irish and Scottish) and means “Life of Water”. It is a type of spirit with more than 40% alcohol by volume. Traditional whisky from Scotland and Ireland distilled from malted barley or grain, while American style whisky, Bourbon, makes primarily from corn. As the art of whisky spread around the world, there are more people outside of Scotland and Ireland started to make whisky. "Whisky" is Scotish spelling, while "Whiskey" is Irish spelling. Although you may see many bottles from Scotland and other countries printed "Whisky", both spelling are refering to the same beverage in modern use.</p>
@@ -60,45 +71,43 @@
 
   <center>
   <br>
-  <p>Below is the map of whisky, hover your cursor over the country to see the interesting fact of whisky!</p>
+  <p>Below is the map of whisky, the countries filled in green represent whisky producing countries.</p><br>
+  <p>Point at the country to see the interesting fact of whisky!</p>
   </center>
 
   <center>
   <div id="map"></div>
   <div id="country_name">
-    <table>
       <p>
         The Countries that Make Whisky(Whiskey)
       </p>
-      <tr>
-        <td>Scotland (United Kingdom)</td>
-        <td>United States</td>
-        <td>Japan</td>
-        <td>France</td>
-        <td>Netherlands</td>
-        <td>Australia</td>
-      </tr>
-      <tr>
-        <td>England (United Kingdom)</td>
-        <td>Ireland</td>
-        <td>India</td>
-        <td>Sweden</td>
-        <td>Belgium</td>
-        <td>South Africa</td>
-      </tr>
-      <tr>
-        <td>Wales (United Kingdom)</td>
-        <td>Canada</td>
-        <td>Taiwan</td>
-        <td>Finland</td>
-        <td></td>
-        <td></td>
-      </tr>
-    </table>
+      <button class="country" id="sco" type="button">Scotland(United Kingdom)</button>
+      <button class="country" id="wal" type="button">Wales (United Kingdom)</button>
+      <button class="country" id="usa" type="button">United States</button>
+      <button class="country" id="net" type="button">Netherlands</button>
+      <button class="country" id="sou" type="button">South Africa</button>
+      <br>
+      <button class="country" id="eng" type="button">England (United Kingdom)</button>
+      <button class="country" id="fra" type="button">France</button>
+      <button class="country" id="aus" type="button">Australia</button>
+      <button class="country" id="swi" type="button">Switzerland</button>
+      <button class="country" id="ire" type="button">Ireland</button>
+      <br>
+      <button class="country" id="can" type="button">Canada</button>
+      <button class="country" id="bel" type="button">Belgium</button>
+      <button class="country" id="fin" type="button">Finland</button>
+      <button class="country" id="tai" type="button">Taiwan</button>
+      <button class="country" id="swe" type="button">Sweden</button>
+      <button class="country" id="ind" type="button">India</button>
+      <p> Alternatively, you may click on the country to see the whisky fact of that country!</p>
     </div>
     <br>
     <br>
-    <div id="summary" style="width: 1000px;height: 300px;background-color: pink;"></div>
+  </center>
+  <center>
+    <div id="summary" align="center" style="width: 1000px;height: 300px;background-color: pink;"> 
+    </div>
+    <center>
     <br><br>
     <hr>
     <h1>Lession 2: The Soul</h1>
@@ -188,10 +197,19 @@
     <center>
     <h1>Graduation Prize: Your Data Scientist</h1></center>
     <h2> Our database </h2>
+    <p> Before suggesting whiskies(whiskeys), let me introduce our databse.</p>
+    <br><br>
     <p> Here is the average score of each country.</p>
   	<div id="barchart"></div>
+    <br><br>
+    <h3 style="color:red">We are working below bubble chart interaction, will be soon available!</h2>
+    <div id="controls"></div>
+    <div id="viz"></div>
+    <h3 style="color:red">However, the below function is working, please continue!</h3>
+    <hr>
     <h2> A bottle of whisky for you?</h2>
-    <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p><br><br>
+    <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p></center>
+
     <div id="dropdown" style="height:100px;"></div>
     <center>
     <div id="wheel" style="height:500px;"></div>
@@ -204,10 +222,11 @@
       .defer(d3.json, "whiskymap.json")
       .defer(d3.tsv,"whisky_fact.tsv")
       .defer(d3.csv, "whisky_clear.csv")
+      .defer(d3.csv, "count.csv")
       .await(doTasks);
 
     // doTasks is the scripts to visualize the data
-    function doTasks(error, worldmap, whisky_map, whisky_fact, whisky_data){
+    function doTasks(error, worldmap, whisky_map, whisky_fact, whisky_data, summ_count){
     	if (error) throw error;
       	// Catch error
 
@@ -227,7 +246,6 @@
         whisky_data.forEach(function(d){
             d.whisky = d.whisky;
             d.score = +d.score;
-            d.review = +d.review;
             d.cost = +d.cost;
             d.class = d.class;
             d.cluster = d.cluster;
@@ -299,8 +317,6 @@
 
         country.on("mouseover", function(map){
           mouseoverCountry = d3.select(this).attr("id");
-          console.log("It works!");
-          console.log(mouseoverCountry);
 
           var id_country;
 
@@ -310,53 +326,83 @@
             id_country = "usa";
           else
            id_country = mouseoverCountry.substring(0,3).toLowerCase();
-          console.log(id_country)
           
           
           d3.selectAll("path#"+id_country)
             .transition().style("fill","red");
 
-          console.log(whisky_fact);
+          //console.log(whisky_fact); // To delete later
 
           var country_summ = whisky_fact.filter(function(d){
             var choice;
-            if(mouseoverCountry == "United Kingdom")
-              choice = "Scotland";
+            if(mouseoverCountry == "uk")
+              return (d.Country == "sco" ||
+                      d.Country == "uk" ||
+                      d.Country == "eng" ||
+                      d.Country == "wal"
+                      );
             else
               choice = mouseoverCountry;
 
             return d.Country == choice;
           });
 
-          console.log(country_summ);
-
-
-
+          // console.log(country_summ); // To delete later
 
           summ.selectAll("#detail")
              .data(country_summ)
              .enter()
              .append("p")
-             //.attr("id","summary")
              .attr("x",0)
+             .attr("text-align","left")
              .attr("id","detail")
-             //.attr("text-anchor", "middle")
-             //.attr("font-family", "sans-serif")
-             //.attr("font-size", "14px")
-             //.style("color", "black")
-             .text(function(d){return d.Fact+"\n";});
+             .text(function(d){return d.Fact;});
             
                
         });
 
         country.on("mouseout", function(map){
-          console.log("See you!");
           d3.select("#tooltip").remove();
           d3.select("#summary").selectAll("p")
             .remove();
           d3.selectAll(".whisky")
-            .transition().style("fill","teal");
+            .style("fill","teal");
 
+        })
+
+        var table_country = d3.select("#country_name")
+                              .selectAll(".country");
+
+        table_country.on("click",function(){
+
+            var id_country = d3.select(this)
+                               .attr("id");
+
+
+            console.log(id_country); // To delete later
+
+            d3.selectAll(".whisky").transition().style("fill","teal");
+
+            var country_summ = whisky_fact.filter(function(d){
+              return d.Country == id_country;
+            });
+
+            if(id_country == "sco" || id_country == "eng" || id_country == "wal")
+              id_country = "uk";
+
+            d3.selectAll("path#"+id_country)
+            .transition().style("fill","red");
+
+            summ.selectAll("#detail").remove();
+
+            summ.selectAll("#detail")
+             .data(country_summ)
+             .enter()
+             .append("p")
+             .attr("x",0)
+             .attr("id","detail")
+             .text(function(d){return d.Fact;});
+            
         })
 
         // Above is the code for the map and interaction
@@ -503,6 +549,76 @@
    				.style("font-size", "12px")
       			.style("fill", "red")
    				.text("world average " + worldAverage.toFixed(2));
+      /*
+    ------------------------------------------------------------------
+    ---------------------Next Chunk Below-----------------------------
+    ------------------------------------------------------------------
+      */
+
+      /*
+        Here is the code for bubble chart
+      */
+      overallTeamViz(summ_count);
+
+      function overallTeamViz(incomingData) {
+        d3.select("#viz")
+          .append("svg")
+          .attr("width",w)
+          .attr("height",h)
+          .attr("id","viz_base")
+
+
+        d3.select("#viz_base")
+          .append("g")
+          .attr("id", "teamsG")
+          .attr("transform", "translate(50,300)")
+          .selectAll("g")
+          .data(incomingData)
+          .enter()
+          .append("g")
+          .attr("class", "overallG")
+          .attr("transform", function (d,i) {return "translate(" + (i * 50) + ", 0)"});
+          
+        var teamG = d3.selectAll("g.overallG");
+          
+        teamG.append("circle")
+              .attr("r", 20)
+              .style("fill", "pink")
+              .style("stroke", "black")
+              .style("stroke-width", "1px");
+
+        teamG.append("text")
+              .style("text-anchor", "middle")
+              .attr("y", 30)
+              .style("font-size", "10px")
+              .text(function(d) {return d.country});
+
+        var dataKeys = d3.keys(incomingData[0])
+                          .filter(function (el) {return el != "country" && el != "continent"})    
+        
+        
+        d3.select("#controls")
+          .selectAll("button.country")
+          .data(dataKeys).enter()
+          .append("button")
+          //.on("click", buttonClick)
+          .html(function(d) {return d});
+/*
+        function buttonClick(datapoint) {
+          var maxValue = d3.max(incomingData, 
+          function(d) {return parseFloat(d[datapoint])
+          });
+          var radiusScale = d3.scale.linear().domain([0,maxValue]).range([2,20]);
+          d3.selectAll("g.overallG")
+          .select("circle")
+          .attr("r", function(d) {return radiusScale(d[datapoint]); });
+
+        }
+
+        */
+      }
+
+
 
       /*
 		------------------------------------------------------------------
@@ -541,7 +657,7 @@
           {"flavor": "Very Smoky", "color" : "#52527a","share" :1.5},
         ]; // Text and color set up for the wheel
 
-        var col = ["whisky","score","review","cost","cluster","class","country","type"];
+        var col = ["whisky","score","cost","cluster","class","country","type"];
 
         // Canvas size set up
         var margin = {top:5, right:5, bottom:100, left:100};
@@ -596,12 +712,33 @@
           var thead = table.append("thead");
           var tbody = table.append("tbody");
 
-          thead.append("tr")
-             .selectAll("th")
-             .data(columns)
-             .enter()
-             .append("th")
-             .text(function(d){return d;});
+          var sortAscending = true;
+
+          var headers = thead.append("tr")
+                             .selectAll("th")
+                             .data(columns)
+                             .enter()
+                             .append("th")
+                             .text(function(d){return d;})
+                             .on("click",function(d){
+                                headers.attr("class","header");
+
+                                if(sortAscending){
+                                  rows.sort(function(a,b){
+                                    return d3.ascending(a[d],b[d]); 
+                                  });
+                                  sortAscending = false;
+                                  this.className = "aes";
+                                }
+                                else{
+                                  rows.sort(function(a,b){
+                                    return d3.descending(a[d],b[d]); 
+                                  });
+                                  sortAscending = true;
+                                  this.className= "des";
+                                }
+
+                             });
 
           var rows = tbody.selectAll("tr")
                   .data(data)
@@ -611,11 +748,37 @@
           var cells = rows.selectAll("td")
                   .data(function(row){
                     return columns.map(function(col){
-                      return {column: col, value: row[col]};
+                      if(col == "cost"){
+                        var temp = row[col];
+                        var str;
+                        if (temp == 1)
+                          str = "$";
+                        else if (temp == 2)
+                          str = "$$";
+                        else if (temp == 3)
+                          str = "$$$";
+                        else if (temp == 4)
+                          str = "$$$$";
+                        else if (temp == 5)
+                          str = "$$$$";
+                        else if (temp == 6)
+                          str = "$$$$+";
+
+                        console.log(col + ":" + str);
+                        return {column: col, value: str};
+                      }
+                      else if (col == "score"){
+                        console.log(typeof(row[col]) + ": " + row[col]);
+                        return {column: col, value: row[col]};
+                      }
+                      else{
+                        return {column: col, value: row[col]};
+                      }
                     })
                   })
                   .enter()
                   .append("td")
+                  .attr("data-th", function(d){return d.column;})
                   .text(function(d){return d.value;});
 
           return table;
@@ -722,7 +885,7 @@
         					});
         	return filtered;
 
-        } // End function getCluster
+        } // End function filteredList
 
           
         // To obtain the selection on the dropdown list
@@ -761,11 +924,12 @@
 
         wheel.selectAll(".slice").on("click",function(d){
             selectedFlavor = d.data.flavor;
-            //console.log(d.data.flavor);
             console.log(selectedCountry); // To delete later
             console.log(selectedFlavor); // To delete later
 
+            // To filter the list based on selected country and flavor
             var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor);
+            console.log(whisky_list);
             // To remove the table if there is a table existed in id="suggestion"
             d3.selectAll("#suggestion").selectAll("table").remove();
             // To generate a table and rows

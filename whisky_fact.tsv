@@ -1,15 +1,15 @@
 Country	Fact
-uk	SCOTLAND:
-uk	Scotland is a famous whisky production country and Scotch Whisky often called "Scotch". Scotch Whisky is always spelled without the 'e'. In order to be officially called Scotch whisky:
-uk	1) The spirit needs to mature in oak for at least three years.
-uk	2) Production and maturation must take place in Scotland.
-uk	3) Single malt Scotch whisky must be made from 100% malted barley.
-uk	Regions:
-uk	1) The Lowlands: Southernmost region of Scotland, famous for triple distillery method (Increases the alcohol content but leaves the final whiskey lighter)
-uk	2) Speyside: Region along the River Spey, 50% of all Scotch is produced here.
-uk	3) Campbeltown: On the Kintyre Peninsula on the West Coast of Scotland
-uk	4) Islay: Island across the West Coast of Scotland
-uk	5) The Highlands: The remaining area of Scotland, the largest whisky producing area, over 30 distilleries in the area.
+sco	SCOTLAND:
+sco	Scotland is a famous whisky production country and Scotch Whisky often called "Scotch". Scotch Whisky is always spelled without the 'e'. In order to be officially called Scotch whisky:
+sco	1) The spirit needs to mature in oak for at least three years.
+sco	2) Production and maturation must take place in Scotland.
+sco	3) Single malt Scotch whisky must be made from 100% malted barley.
+sco	Regions:
+sco	1) The Lowlands: Southernmost region of Scotland, famous for triple distillery method (Increases the alcohol content but leaves the final whiskey lighter)
+sco	2) Speyside: Region along the River Spey, 50% of all Scotch is produced here.
+sco	3) Campbeltown: On the Kintyre Peninsula on the West Coast of Scotland
+sco	4) Islay: Island across the West Coast of Scotland
+sco	5) The Highlands: The remaining area of Scotland, the largest whisky producing area, over 30 distilleries in the area.
 ire	IRELAND:
 ire	Irish Whiskey is always spelled with an e – this is a key difference between Irish whiskey and Scotch whisky. Irish whiskey uses little or no peat, so there is usually no smokiness in these whiskies. Irish whiskey may contain a distillate of malt, a barley distillate and a portion of grain spirit. Most of the Irish whiskeys distilled three times.Like Scotch whisky, Irish whiskey must be matured for a legal minimum of three years. Typicaly Irish Whiskeys character are complex, aromatic, smooth, slightly sweet.
 usa	UNITED STATES:
@@ -27,8 +27,8 @@ bel	Two famous Belgian distilleries are Belgian Owl and Goldlys. Belgian Owl are
 fin	FINLAND
 fin	Finnish whisky was first distilled from 1981 to 2000 by state-owned alcohol monopoly Alko, then Finish whisky is dominated by Panimoravintola Beer Hunter and Teerenpeli Distillery and Brewery. The typical Finnish character is nutty malt.
 uk	----------------------------------------------------------------------
-uk	ENGLAND:
-uk	There are currently at least six distilleries producing English whisky. The typcial English whisky is apple, cream, and clove.
+eng	ENGLAND:
+eng	There are currently at least six distilleries producing English whisky. The typcial English whisky is apple, cream, and clove.
 sou	SOUTH AFRICA:
 sou	South Africa is a fast-growing producer in whisky and they make whisky the same way as Scotland. The typical character of South African whisky is butterscotch, toast, and vanilla.
 ind	INDIA:
