@@ -5,34 +5,60 @@
     <meta charset="utf-8" />
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <style type="text/css">
-      text{
-        cursor: pointer;
-      }
-      table{
-      	border-collapse: collapse;
-      }
-      th{
-      	background: #333;
-      	color: white;
-      	font-weight: bold;
-      	cursor: s-resize;
-      }
-      td,th{
-      	padding: 10px;
-      	border: 1px solid #ccc;
-      	text-align: left;
-      }
-      p{
-        margin:0;
-      }
-      img{
-        image-orientation:from-image;
-      }
-      div.intro_pic{
-        transform: rotate(90deg);
-      }
-      .country{font-size:14px; cursor: pointer;}
+		text{
+		cursor: pointer;
+		}
+		table{
+			border-collapse: collapse;
+		}
+		th{
+			background: #333;
+			color: white;
+			font-weight: bold;
+			cursor: s-resize;
+		}
+		td,th{
+			padding: 10px;
+			border: 1px solid #ccc;
+			text-align: left;
+		}
+		p{
+		margin:0;
+		}
+		img{
+		image-orientation:from-image;
+		}
+		div.intro_pic{
+		transform: rotate(90deg);
+		}
 
+		.country{font-size:14px; cursor: pointer;}
+
+		div.sugg{
+		height: 800px;
+		width: 1000px;
+		overflow: scroll;
+		}
+
+		input {
+			height: 30px;
+			width: 800px;
+				
+			writing-mode: bt-lr;
+			}
+		#char_base{
+			display: flex;
+		}
+		#summary{
+		    text-align: left;
+		}
+    #detail{
+      font-size:13px;
+      font-family: "Comic Sans MS", cursive, sans-serif;
+    }
+    .bar:hover{
+      fill: brown;
+    }
     </style>
 </head>
 
@@ -105,13 +131,15 @@
     <br>
   </center>
   <center>
-    <div id="summary" align="center" style="width: 1000px;height: 300px;background-color: pink;"> 
+    <div id="summary" style="width: 1000px;height: 400px;background-color: pink;"> 
     </div>
     <center>
     <br><br>
     <hr>
     <h1>Lession 2: The Soul</h1>
     <p>The unique flavor in each bottle of whisky(whiskey) is called "character". We grouped all characters into 9 characters. </p>
+    <br>
+   </div> 
     <br>
     <div id="characters">
     <table>
@@ -186,6 +214,7 @@
     <br><br>
     <hr>
     <h1> Lesson 3: The Algorithm</h1></center>
+    <img src="choice_algorithm.png" style="width:50%; height: 50%">
     <p>Step 1: Choose your favourite country<br>
        Step 2: Choose your desired character<br>
        Step 3: Choose a price range<br>
@@ -209,12 +238,54 @@
     <hr>
     <h2> A bottle of whisky for you?</h2>
     <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p></center>
-
-    <div id="dropdown" style="height:100px;"></div>
+    <br>
+    <br>
     <center>
-    <div id="wheel" style="height:500px;"></div>
-    <div id="suggestion"></div>
-  </center>
+    	<p>Step 1: Select a country</p>
+    	<div id="dropdown" style="height:50px;"></div>
+    	<p>Step 2: Select a character</p>
+      <p>You may click on "Surprise!" for the unrated whiskies/whiskeys</p>
+    	<div id="character_buttons">
+    		<button class="flavor" id="Fruity" type="button">Fruity</button>
+    		<button class="flavor" id="Honey" type="button">Honey</button>
+    		<button class="flavor" id="Spicy" type="button">Spicy</button>
+    		<button class="flavor" id="Floral" type="button">Floral</button>
+    		<button class="flavor" id="Malty" type="button">Malty</button>
+    		<button class="flavor" id="Nutty" type="button">Nutty</button>
+    		<button class="flavor" id="Winey" type="button">Winey</button>
+    		<button class="flavor" id="Smoky" type="button">Smoky</button>
+    		<button class="flavor" id="Very Smoky" type="button">Very Smoky</button>
+    		<button class="flavor" id="N" type="button">Surprise!</button>
+        
+
+    	</div>
+    	<br>
+    	<div id="rye_contain" style="display:none">
+    		<p>For selecting Rye Whisky</p>
+    		<button class="rye" id="R0" type="button">No Rye</button>
+    		<button class="rye" id="R1" type="button">Low Rye</button>
+    		<button class="rye" id="R2" type="button">Standard Rye</button>
+    		<button class="rye" id="R3" type="button">High Rye</button>
+    		<button class="rye" id="R4" type="button">Straight Rye</button>
+    	</div>
+    	<br><br>
+    	<div id="money" style="display:none">
+    		<p>Select a budget</p>
+    		<button class="bud" id="all" type="button">Any</button>
+    		<button class="bud" id="1" type="button">Less than $25</button>
+    		<button class="bud" id="2" type="button">$26-40</button>
+    		<button class="bud" id="3" type="button">$41-55</button>
+    		<button class="bud" id="4" type="button">$56-90</button>
+    		<button class="bud" id="5" type="button">$91-200</button>
+    		<button class="bud" id="6" type="button">$200 or above</button>
+    	</div>
+    	<br><br>
+    	<div class ="sugg" id="suggestion" style="display:none"><p>Please select</p></div>
+    	<br><br><br><br>
+    	<hr>
+    	<br>
+    	<p>At the end, thank you for coming and enjoy your glass of whisky(whiskey)!</p>
+  	</center>
   <script type="text/javascript">
   	// To set a queue to load files, then call doTasks
     d3.queue()
@@ -252,6 +323,7 @@
             d.country = d.country;
             d.type = d.type;
         });
+
 
         /*
     	------------------------------------------------------------------
@@ -354,7 +426,6 @@
              .enter()
              .append("p")
              .attr("x",0)
-             .attr("text-align","left")
              .attr("id","detail")
              .text(function(d){return d.Fact;});
             
@@ -406,12 +477,13 @@
         })
 
         // Above is the code for the map and interaction
-      
-      /*
-    ------------------------------------------------------------------
-    ---------------------Next Chunk Below-----------------------------
-    ------------------------------------------------------------------
-      */
+
+
+        /*
+    	------------------------------------------------------------------
+    	---------------------Next Chunk Below-----------------------------
+    	------------------------------------------------------------------
+        */
 
 
     	// Below is the code for bar chart
@@ -549,6 +621,7 @@
    				.style("font-size", "12px")
       			.style("fill", "red")
    				.text("world average " + worldAverage.toFixed(2));
+
       /*
     ------------------------------------------------------------------
     ---------------------Next Chunk Below-----------------------------
@@ -644,63 +717,11 @@
 		Scotland and the corresponding character.
       */
 
-      // The setup for the character wheel
-        var character = [
-          {"flavor": "Fruity", "color" : "green","share" :1},
-          {"flavor": "Honey", "color" : "#ffbf00","share" :1},
-          {"flavor": "Spicy", "color" : "#ff4000", "share" :1},
-          {"flavor": "Floral", "color" : "#00ba00","share" :1},
-          {"flavor": "Malty", "color" : "#ca5900", "share" :1},
-          {"flavor": "Nutty", "color" : "brown","share" :1},
-          {"flavor": "Winey", "color" : "#bf00ff","share" :1},
-          {"flavor": "Smoky", "color":"#867979","share" :1},
-          {"flavor": "Very Smoky", "color" : "#52527a","share" :1.5},
-        ]; // Text and color set up for the wheel
-
+      
         var col = ["whisky","score","cost","cluster","class","country","type"];
-
-        // Canvas size set up
-        var margin = {top:5, right:5, bottom:100, left:100};
-        var w_wheel = 400,
-            h_wheel = 400;
 
         var w_suggestion = 1200,
             h_suggestion = 800;
-
-        // The following code is for set up character wheel on id="wheel"
-        var wheel = d3.select("#wheel")
-              .append("svg")
-              .attr("width",w_wheel)
-              .attr("height",h_wheel)
-              .attr("transform","translate(0,0)");
-
-        var radius = w_wheel/2;
-
-        var path = d3.arc()
-              .innerRadius(0)
-              .outerRadius(radius);
-
-        var pie = d3.pie().value(function(d){return d.share;});
-
-
-        var arcs = wheel.selectAll("g.arc")
-                   .data(pie(character))
-                   .enter()
-                   .append("g")
-                   .attr("class","slice")
-                   .attr("transform","translate(" + radius + "," + radius +")");
-
-        arcs.append("path")
-            .attr("d", path)
-            .attr("fill",function(d){return d.data.color;});
-
-        arcs.append("text")
-            .attr("transform", function(d){return "translate(" + path.centroid(d) + ")";})
-            .style("text-anchor","middle")
-            .text(function(d){return d.data.flavor;})
-            .style("stroke","white");
-        // The above code is for set up character wheel on id="wheel"
-
         // Set up the table on #suggestion
         var suggestion = d3.select("#suggestion")
                    .attr("width",w_suggestion)
@@ -764,12 +785,44 @@
                         else if (temp == 6)
                           str = "$$$$+";
 
-                        console.log(col + ":" + str);
+                        // console.log(col + ":" + str); // Delete later
                         return {column: col, value: str};
                       }
-                      else if (col == "score"){
-                        console.log(typeof(row[col]) + ": " + row[col]);
-                        return {column: col, value: row[col]};
+                      else if (col == "cluster"){
+                      	var temp = row[col];
+                      	var str;
+                      	if (temp == "A")
+                      		str = "Fruity, Honey, Spicy";
+                      	else if (temp == "B")
+                      		str = "Fruity, Floral, Malty";
+                      	else if (temp == "C")
+                      		str = "Fruity, Floral, Nutty";
+                      	else if (temp == "E")
+                      		str = "Fruity, Honey, Malty, Winey";
+                      	else if (temp == "F")
+                      		str = "Fruity, Spicy, Smoky";
+                      	else if (temp == "G")
+                      		str = "Honey, Floral, Fruity, Spicy";
+                      	else if (temp == "H")
+                      		str = "Fruity, Malty, Floral";
+                      	else if (temp == "I")
+                      		str = "Fruity, Nutty, Spicy, Smoky";
+                      	else if (temp == "J")
+                      		str = "Fruity, Spicy, malty, Very Smoky";
+                      	else if (temp == "R0")
+                      		str = "No rye grain";
+                      	else if (temp == "R1")
+                      		str = "Low rye";
+                      	else if (temp == "R2")
+                      		str = "Standard rye";
+                      	else if (temp == "R3")
+                      		str = "High rye";
+                      	else if (temp == "R4")
+                      		str = "Straight rye";
+                      	else
+                      		str = temp;
+                        
+                        return {column: col, value: str};
                       }
                       else{
                         return {column: col, value: row[col]};
@@ -789,9 +842,10 @@
         	On the column Cluster, from whisky_clear.csv, consists more than 1 character.
         	filteredList is the function to match to cluster
         */
-        var filteredList = function(dataset,country,choice){
+        var filteredList = function(dataset,country,choice,budget){
         	var filtered;
 
+        	// Below if function is for characters
         	if (choice == "Fruity")
         		filtered =  dataset.filter(function(d){
               					return (d.country == country && 
@@ -883,10 +937,39 @@
         		filtered = dataset.filter(function(d){
         						return (d.country == country && d.cluster == "J");
         					});
+        	else if (choice == "R0")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "R0");
+        					});
+        	else if (choice == "R1")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "R1");
+        					});
+        	else if (choice == "R2")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "R2");
+        					});
+        	else if (choice == "R3")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "R3");
+        					});
+        	else if (choice == "R4")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "R4");
+        					});
+        	// Above functions are for characters
+        	else if (choice == "N")
+        		filtered = dataset.filter(function(d){
+        						return (d.country == country && d.cluster == "N");
+        					});
+
+        	if(budget != "all")
+        		filtered = filtered.filter(function(d){
+        						return (d.cost == budget);
+        					});
         	return filtered;
 
         } // End function filteredList
-
           
         // To obtain the selection on the dropdown list
         var dropdown_option = d3.nest().key(function(d){return d.country;})
@@ -918,20 +1001,33 @@
                       			.property("value");
 
             console.log(selectedCountry); // To delete later
+
+            if(selectedCountry == "USA"){
+            	document.getElementById("rye_contain").style.display = "block";
+            }
+            else{
+            	document.getElementById("rye_contain").style.display = "none";
+            }
+
             
-        }) // End event on selecting country
+        }); // End event on selecting country
 
-
-        wheel.selectAll(".slice").on("click",function(d){
-            selectedFlavor = d.data.flavor;
+        d3.select("#character_buttons")
+          .selectAll(".flavor")
+          .on("click",function(d){
+            selectedFlavor = d3.select(this).attr("id");
             console.log(selectedCountry); // To delete later
             console.log(selectedFlavor); // To delete later
 
             // To filter the list based on selected country and flavor
-            var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor);
+            var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor,"all");
             console.log(whisky_list);
             // To remove the table if there is a table existed in id="suggestion"
             d3.selectAll("#suggestion").selectAll("table").remove();
+            d3.selectAll("#suggestion").selectAll("p").remove();
+            //Display budget panel
+            document.getElementById("money").style.display = "block";
+            document.getElementById("suggestion").style.display = "block";
             // To generate a table and rows
             var table = tabulate(whisky_list,col);
             // To add a table head
@@ -939,19 +1035,49 @@
              	   .text(function(col){return col.charAt(0).toUpperCase()+col.substr(1);});
         }); // End event on selecting character
 
-          
+        d3.select("#rye_contain")
+          .selectAll(".rye")
+          .on("click",function(d){
+            selectedFlavor = d3.select(this).attr("id");
+            console.log(selectedCountry); // To delete later
+            console.log(selectedFlavor); // To delete later
+
+            // To filter the list based on selected country and flavor
+            var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor,"all");
+            console.log(whisky_list);
+            // To remove the table if there is a table existed in id="suggestion"
+            d3.selectAll("#suggestion").selectAll("table").remove();
+            d3.selectAll("#suggestion").selectAll("p").remove();
+            //Display budget panel
+            document.getElementById("money").style.display = "block";
+            document.getElementById("suggestion").style.display = "block";
+            // To generate a table and rows
+            var table = tabulate(whisky_list,col);
+            // To add a table head
+            table.selectAll("thead th")
+             	   .text(function(col){return col.charAt(0).toUpperCase()+col.substr(1);});
+        }); // End event on selecting character
+
+        d3.select("#money")
+          .selectAll(".bud")
+          .on("click",function(d){
+          		var budget = d3.select(this).attr("id");
+          		console.log(budget);
+          		console.log(selectedCountry); // To delete later
+            	console.log(selectedFlavor);
+            	var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor,budget);
+
+          		console.log(whisky_list);
+          		d3.selectAll("#suggestion").selectAll("table").remove();
+            	d3.selectAll("#suggestion").selectAll("p").remove();
+          		var table = tabulate(whisky_list,col);
+            	// To add a table head
+            	table.selectAll("thead th")
+             	     .text(function(col){return col.charAt(0).toUpperCase()+col.substr(1);});
+
+          });
 
           
-
-          //var table = tabulate(result,col); // Generate a table of suggestion
-          
-
-
-
-          //table.selectAll("thead th")
-          //   .text(function(col){return col.charAt(0).toUpperCase()+col.substr(1);});
-
-
           // Above is the code for suggestion and interaction
       	  /*
 			------------------------------------------------------------------
