@@ -4,6 +4,8 @@
     <title>Whisky for New Drinkers!!!</title>
     <meta charset="utf-8" />
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <style type="text/css">
 		text{
 		cursor: pointer;
@@ -22,7 +24,7 @@
 			border: 1px solid #ccc;
 			text-align: left;
 		}
-		p{
+		#detail{
 		margin:0;
 		}
 		img{
@@ -62,7 +64,7 @@
     </style>
 </head>
 
-<body>
+<body style="background-color:Cornsilk;">
   <center>
   <h1> Welcome to our page to learn about whisky!</h1>
   <div class="intro_pic">
@@ -74,7 +76,7 @@
   <p> Whisky originates from Gaels (Which are the ancestors of Irish and Scottish) and means “Life of Water”. It is a type of spirit with more than 40% alcohol by volume. Traditional whisky from Scotland and Ireland distilled from malted barley or grain, while American style whisky, Bourbon, makes primarily from corn. As the art of whisky spread around the world, there are more people outside of Scotland and Ireland started to make whisky. "Whisky" is Scotish spelling, while "Whiskey" is Irish spelling. Although you may see many bottles from Scotland and other countries printed "Whisky", both spelling are refering to the same beverage in modern use.</p>
 
   <h2>Why drink whisky?</h2>
-  <p>One may ask what makes whisky different other spirit? What makes whisky different with other spirit? Flavor! For example: Scotch whisky requires the spirit to make with 100% malted barley and to mature in oak at least for three years. The unique flavor of each whisky, we called it character, developed in the oak barrel that makes everybody’s favorite whisky.</p> <br>
+  <p>One may ask what makes whisky different other spirit? What makes whisky different with other spirit? Flavor! For example: Scotch whisky requires the spirit to make with 100% malted barley and to mature in oak at least for three years. The unique flavor of each whisky, we called it character, developed in the oak barrel that makes everybody’s favorite whisky.</p>
   <p>For example, “peaty” is a unique character to Scotch whisky, it describes the smoky aroma in whisky, sometimes you may receive the flavor as charcoal aroma. Some of the Scotch whisky from Islay in Scotland, such as Ardbeg, Bowmore, and Laphroaig, are famous peaty whisky.</p>
 
   <h2>Don't know how to pick a bottle? No Problem!</h2>
@@ -131,7 +133,7 @@
     <br>
   </center>
   <center>
-    <div id="summary" style="width: 1000px;height: 400px;background-color: pink;"> 
+    <div id="summary" style="width: 1000px;height: 400px;background-color: Lavender;"> 
     </div>
     <center>
     <br><br>
@@ -214,7 +216,7 @@
     <br><br>
     <hr>
     <h1> Lesson 3: The Algorithm</h1></center>
-    <img src="choice_algorithm.png" style="width:50%; height: 50%">
+    <img src="choice_algorithm.JPG" style="width:50%; height: 50%">
     <p>Step 1: Choose your favourite country<br>
        Step 2: Choose your desired character<br>
        Step 3: Choose a price range<br>
@@ -231,10 +233,10 @@
     <p> Here is the average score of each country.</p>
   	<div id="barchart"></div>
     <br><br>
-    <h3 style="color:red">We are working below bubble chart interaction, will be soon available!</h2>
+    <p>Click count to see how many whiskies(whiskeys) our database has from each country!</p>
+    <br>
     <div id="controls"></div>
     <div id="viz"></div>
-    <h3 style="color:red">However, the below function is working, please continue!</h3>
     <hr>
     <h2> A bottle of whisky for you?</h2>
     <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p></center>
@@ -631,20 +633,23 @@
       /*
         Here is the code for bubble chart
       */
+      var viz_w = 1200,
+          viz_h = 200;
+
       overallTeamViz(summ_count);
 
       function overallTeamViz(incomingData) {
         d3.select("#viz")
           .append("svg")
-          .attr("width",w)
-          .attr("height",h)
+          .attr("width",viz_w)
+          .attr("height",viz_h)
           .attr("id","viz_base")
 
 
         d3.select("#viz_base")
           .append("g")
           .attr("id", "teamsG")
-          .attr("transform", "translate(50,300)")
+          .attr("transform", "translate(50,100)")
           .selectAll("g")
           .data(incomingData)
           .enter()
@@ -662,7 +667,7 @@
 
         teamG.append("text")
               .style("text-anchor", "middle")
-              .attr("y", 30)
+              .attr("y", 50)
               .style("font-size", "10px")
               .text(function(d) {return d.country});
 
@@ -674,21 +679,21 @@
           .selectAll("button.country")
           .data(dataKeys).enter()
           .append("button")
-          //.on("click", buttonClick)
+          .on("click", buttonClick)
           .html(function(d) {return d});
-/*
+
         function buttonClick(datapoint) {
           var maxValue = d3.max(incomingData, 
-          function(d) {return parseFloat(d[datapoint])
-          });
-          var radiusScale = d3.scale.linear().domain([0,maxValue]).range([2,20]);
+                            function(d) {return parseFloat(d[datapoint]);
+                          });
+          var radiusScale = d3.scaleLinear().domain([0,maxValue]).range([2,20]);
           d3.selectAll("g.overallG")
           .select("circle")
-          .attr("r", function(d) {return radiusScale(d[datapoint]); });
+          .attr("r", function(d) {return Math.log(radiusScale(d[datapoint]))*10;} );
 
         }
 
-        */
+        
       }
 
 
