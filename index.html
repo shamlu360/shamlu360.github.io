@@ -66,6 +66,9 @@
     .bar:hover{
       fill: OrangeRed;
     }
+    th#type_type{
+      width:20%;
+    }
     </style>
 </head>
 
@@ -238,7 +241,36 @@
     <p> Here is the average score of each country.</p>
   	<div id="barchart"></div>
     <br><br>
-    <p>Click count to see how many whiskies(whiskeys) our database has from each country!</p>
+    <p>We divide the whiskies(whiskeys) in our database into the following types:</p>
+    <div id="type_table" style="width:1000px;height:500px">
+      <table>
+        <tr>
+          <th id="type_type">Types</th>
+          <th>Descriptions</th>
+        </tr>
+        <tr>
+          <td>Single Malt-Like</td>
+          <td>It means the type of whiskies/whiskeys have been distilled at a single distillery using a pot still distillation process and made from a mash of malted barley. 
+          <br>"Malt" indicates that the whisky is distilled from a "malted" barley. Several types of grains can be malted (for example, barley, rye and wheat are all grains which can be malted); however, in the case of single malt Scotch, barley is the only grain used.
+          <br>"Single" indicates that all the spirits in the bottle come from a single distillery. Bottlings containing malt whisky from multiple distilleries are called "blended malt". 
+          <br>Our database includes all the traditional Scottish “single malt” whiskies, and other international malt whiskies. Includes some international blends that taste more like single malts than blends.</td>
+        </tr>
+        <tr>
+          <td>Scotch-Like</td>
+          <td>It refers to the typical Scottish “blended whiskies”, and also includes international whiskies that again are of comparable style.</td>
+        </tr>
+        <tr>
+          <td>Rye-Like</td>
+          <td>It refers to classic Canadian (and some American) blended whisky style that is heavily influenced by rye flavours. Some whiskies in this category are exclusively rye whisky (i.e., 100% or “straight” rye whisky),  including some international whiskies.</td>
+        </tr>
+        <tr>
+          <td>Bourbon-Like</td>
+          <td>It refers to the classic American whisky style. Bourbon is a predominantly corn-based whisky (at least 51% corn in the mash). Some Canadian whisky can be bourbon-like.</td>
+        </tr>
+      </table>
+    </div>
+    <br><br>
+    <p style="color:red">Choose on one of the types to check out that type of whiskies/whiskeys in our database!</p>
     <br>
     <div id="type_dropdown" style="height:50px;"></div>
     <p>You may point at the bubble to see the numbers of whiskies/whiskeys of the country</p>

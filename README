@@ -1,0 +1,122 @@
+Name: Maggie Lu, Jacques Sham
+Topic: Whisky for new drinkers!
+Website: https://shamlu360.github.io/
+
+
+In this html page, there are the following divs:
+1) "intro_pic" - Contains a pictures of whiskies
+2) "map" - Contains an interactive map
+3) "country_name" - Contains buttons of the list of whisky-producing countries, helping "map"
+4) "summary" - Space reserved to display facts of whisky-producing countries, helping "map"
+5) "characters" - Contains a table of characters descriptions and examples
+6) "flowchart" - Contains the flowchart for users how to pick a bottle of whisky from the list
+7) "barchart" - Contains the bar chart of whisky average score of each country
+8) “type_table” - Explains the types we have in the database
+9) “type_dropdown” - Drop down list to help svg#bubble, svg#bubble followed by this div for bubble chart to show the types of whisky in the database
+10) "dropdown" - Contains the dropdown list, helping "suggestion"
+11) "character_buttons" - Contains buttons for users to choose characters, helping "suggestion"
+12) "rye_contain" - Contains buttons if users picking rye whisky, only pop out if users choose "USA" from "dropdown"
+13) "money" - Contains buttons of price range, pop out after users have chosen from "character_button", helping "suggestion"
+14) "suggestion" - Pop out a table after users have picked from "dropdown" and "character_buttons", regenerate when user click on "rye_contain" or "money"
+
+Photos required to run:
+1) whisky_intro.jpg
+2) choice_algorithm.JPG
+
+Files be uploading:
+1) 	File Name: "worldmap.json"
+	Variable Name: worldmap
+	Description: The map to be drawn as base map in the interactive map
+
+2) 	File Name: "whiskymap.json"
+	Variable Name: whisky_map
+	Description: The map to be drawn on the interactive map to show the whisky-producing countries
+
+3) 	File Name: "whisky_fact.tsv"
+	Variable Name: whisky_fact
+	Description: The file contains all whisky-producing countries, supplement for interactive map
+
+4) 	File Name: "whisky_clear.csv"
+	Variable Name: whisky_data
+	Description: The main file contains all whiskies with name, score, countries, characters and else
+
+
+
+1st Chunk: Load dataset
+	Load dataset from whisky_fact and whisky_data
+
+2nd Chunk: Interactive map
+	- Interactive map draw on div#map, include #basemap
+
+	In div#map, use #basemap draw world map in gray on the next layer.
+	On top of #basemap layer, draw whisky-producing countries map with id with the same as the country id from buttons in html codes below:
+
+	Buttons from html codes: 
+	class = "country"
+	id = First 3 letters of the countries in lower case, except United Kingdom and USA
+	Note:
+	id of United Kingdom is 'uk' and United States is 'usa'
+
+	var map -> Variable call to draw interactive map
+	var summ -> Variable call to display texts when there is interaction from map or buttons
+
+	When user mouseover on the country on Interactive map, d3 would obtain the id of that country,
+	d3 would use the id to obtain the facts from whisky_fact, display on div#summary, and fill the country in red. The text will disappear and country fill back to teal once mouseout.
+
+	Alternatively, if user click on one of the buttons in div#country_name, d3 would obtain the id of that country, d3 would use the id to obtain the facts from whisky_fact, display on div#summary, and fill the country in red. The text will disappear and country fill back to teal when another button be clicked or mouseover on the country in the next time.
+
+3rd Chunk: Bar Chart
+	- Bar Chart on div#barchart
+	- Use whisky_data and compute the average score on each country and show on bar chart
+	- Add a line on the line chart on world average score
+
+4th Chunk:
+	- Bubble Chart for 4 types of whisky of our data base
+	- 4 types of bubble charts to display based on user’s choice from #type_dropdown
+	- User first choose from #type_dropdown
+	- svg#bubble update once user’s choice is made
+
+5th Chunk:
+	Using <div> with id="dropdown" and "suggestion"
+
+	For id="dropdown" is the dropdown list for user to choose a country
+
+	For id="suggestion", after the user have choose a country and a character, the
+	code will generate a table of list of suggested whisky based on country and
+	character chose by user. The default country is "Scotland". When user choose a
+	character without clicking country, the code will generate the result based on
+	Scotland and the corresponding character.
+
+	var col -> table header
+
+	var tabulate -> Function to generate a table from a filtered dataset and table columns
+		-Header: Allow user to sort the table when clicking on header
+		-Rows: Includes cells
+		-Cells:
+			Recodes "costs" from integers 1-6 to "$","$$","$$$","$$$$","$$$$$","$$$$$+", respectively
+			Rdcodes "clusters" from A-J, R0-R4 to following:
+				"A" = "Fruity, Honey, Spicy"
+              	"B" = "Fruity, Floral, Malty"
+              	"C" = "Fruity, Floral, Nutty"
+              	"E" = "Fruity, Honey, Malty, Winey"
+              	"F" = "Fruity, Spicy, Smoky"
+              	"G" = "Honey, Floral, Fruity, Spicy"
+              	"H" = "Fruity, Malty, Floral"
+              	"I" = "Fruity, Nutty, Spicy, Smoky"
+              	"J" = "Fruity, Spicy, malty, Very Smoky"
+              	"R0" = "No rye grain"
+              	"R1" = "Low rye"
+              	"R2" = "Standard rye"
+              	"R3" = "High rye"
+              	"R4" = "Straight rye"
+
+    var filteredList -> function to filter the dataset based on user's selection on country, character, and price range
+
+    On div#dropdown, create a drop down list for countries for user to select. Default country is "Scotland"
+
+    No default selected character.
+
+    When user click on "USA", div#rye_contain pop out for user to select for rye whisky. It does not pop when other country is selected.
+
+    Once a character is picked on #character_button (Even user did not select any country in drop down list), it will call tabulate and generate a table. After that div#money pop out for user to filter price range. Price range is optional but it will call tabulate again to regenerate the table.
+
