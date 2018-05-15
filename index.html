@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
     <style type="text/css">
-		text{
+		button{
 		cursor: pointer;
 		}
 		table{
@@ -59,7 +59,7 @@
       font-family: "Comic Sans MS", cursive, sans-serif;
     }
     .bar:hover{
-      fill: brown;
+      fill: OrangeRed;
     }
     </style>
 </head>
@@ -92,7 +92,7 @@
   <p> Let's begin learn about the countries that make whisky(whiskey).</p><br>
   
 
-  <center><h1>Lession 1: The World of Whisky, Whiskey, and Bourbon</h1></center>
+  <center><h1>Lesson 1: The World of Whisky, Whiskey, and Bourbon</h1></center>
 
   <h2>How does whisky from different countries differ?</h2>
   <p>The character of different bottles of whisky(whiskey) differ with the origin of ingredients and method. Think of your favourite fruit, strawberry, which tastes different if it is grow in California or in Japan. Same as the ingredients of whisky(whiskey): the malt, water, or even rye or corn (depends what kind of whisky) have different taste that builds the unique character in the bottle, along with different methods and legal requirements that makes every bottle of whisky(whiskey) taste different!</p>
@@ -138,7 +138,7 @@
     <center>
     <br><br>
     <hr>
-    <h1>Lession 2: The Soul</h1>
+    <h1>Lesson 2: The Soul</h1>
     <p>The unique flavor in each bottle of whisky(whiskey) is called "character". We grouped all characters into 9 characters. </p>
     <br>
    </div> 
@@ -216,6 +216,7 @@
     <br><br>
     <hr>
     <h1> Lesson 3: The Algorithm</h1></center>
+    <div id="flowchart">
     <img src="choice_algorithm.JPG" style="width:50%; height: 50%">
     <p>Step 1: Choose your favourite country<br>
        Step 2: Choose your desired character<br>
@@ -223,6 +224,7 @@
        Step 4: Pick a bottle from the list<br>
        (If you still confused from the list, you may pick the bottle with the highest score)
     </p>
+    </div>
     <br><br>
     <hr>
     <center>
@@ -235,8 +237,9 @@
     <br><br>
     <p>Click count to see how many whiskies(whiskeys) our database has from each country!</p>
     <br>
-    <div id="controls"></div>
-    <div id="viz"></div>
+    <div id="type_dropdown" style="height:50px;"></div>
+    <p>You may point at the bubble to see the numbers of whiskies/whiskeys of the country</p>
+    <svg id="bubble" width="700" height="800" font-family="sans-serif" font-size="10" text-anchor="middle" style="display:none"></svg>
     <hr>
     <h2> A bottle of whisky for you?</h2>
     <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p></center>
@@ -295,11 +298,15 @@
       .defer(d3.json, "whiskymap.json")
       .defer(d3.tsv,"whisky_fact.tsv")
       .defer(d3.csv, "whisky_clear.csv")
-      .defer(d3.csv, "count.csv")
+      .defer(d3.csv, "bourbon-data.csv")
+      .defer(d3.csv, "single-data.csv")
+      .defer(d3.csv, "rye-data.csv")
+      .defer(d3.csv, "scotch-data.csv")
       .await(doTasks);
 
     // doTasks is the scripts to visualize the data
-    function doTasks(error, worldmap, whisky_map, whisky_fact, whisky_data, summ_count){
+    function doTasks(error, worldmap, whisky_map, whisky_fact, whisky_data,
+     bourbon_data, single_data, rye_data, scotch_data){
     	if (error) throw error;
       	// Catch error
 
@@ -326,6 +333,7 @@
             d.type = d.type;
         });
 
+        
 
         /*
     	------------------------------------------------------------------
@@ -333,12 +341,18 @@
     	------------------------------------------------------------------
         */
 
+        /*
+          Below is the code to make interactive map. The interactive map first draw the base map of the world map with gray, then add a layer of whisky-producing countries, coloured in teal. When user mouseover the whisky-producing countries, the fact of that country will be display on div#summary. Likewise, if user click one of the button on div#country_name, the fact of that country will be display on div#summary.
+        */
+
       	// Below is the code for the map and interaction
       	var w = 1000,
             h = 400;
 
+        // Margin
         var margin = {top:5, right:5, bottom:100, left:100};
 
+        // Select svg for the interactive map
         var map = d3.select("#map")
                     .append("svg")
                     .attr("width",w)
@@ -348,12 +362,13 @@
 
         var g = map.append("g");
 
+        // Choose this projection of world map
         var path = d3.geoPath().projection(d3.geoEquirectangular());
 
         var summ = d3.select("#summary");
 
 
-        
+        // Draw the base map with gray
         g.selectAll("#basemap")
           .data(worldmap.features)
           .enter()
@@ -362,7 +377,7 @@
           .attr("d",path)
           .style("fill","gray");
           
-
+        // Draw the map with teal for whisky-producing countries
         g.selectAll(".whisky")
           .append("g")
            .data(whisky_map.features)
@@ -378,17 +393,19 @@
               else if (country == "United States of America")
                 id = "usa";
               else
-                id = country.substring(0,3).toLowerCase();
+                id = country.substring(0,3).toLowerCase(); 
+                // Set countries id with the first 3 letters
               return id;
+              // Manually reset the id for uk and usa because both countries started with "uni"
            })
-           .style("fill","teal")
-           ;
+           .style("fill","teal");
 
 
         var country = d3.selectAll("path");
 
         var mouseoverCountry;
 
+        // Interaction when mouseover on whisky-producing countries
         country.on("mouseover", function(map){
           mouseoverCountry = d3.select(this).attr("id");
 
@@ -401,11 +418,9 @@
           else
            id_country = mouseoverCountry.substring(0,3).toLowerCase();
           
-          
+          // Change the country colour to red if mouseover
           d3.selectAll("path#"+id_country)
             .transition().style("fill","red");
-
-          //console.log(whisky_fact); // To delete later
 
           var country_summ = whisky_fact.filter(function(d){
             var choice;
@@ -419,9 +434,7 @@
               choice = mouseoverCountry;
 
             return d.Country == choice;
-          });
-
-          // console.log(country_summ); // To delete later
+          }); // Obtain the country facts on selected whisky-producing countries
 
           summ.selectAll("#detail")
              .data(country_summ)
@@ -430,7 +443,7 @@
              .attr("x",0)
              .attr("id","detail")
              .text(function(d){return d.Fact;});
-            
+          // Display the country facts on div#summary
                
         });
 
@@ -440,20 +453,19 @@
             .remove();
           d3.selectAll(".whisky")
             .style("fill","teal");
+        }) // Return to the original state for map and summary when mouseout
 
-        })
-
+        // Below are for users to click on country_name buttons
         var table_country = d3.select("#country_name")
                               .selectAll(".country");
 
+        // Interactions after it is clicked
         table_country.on("click",function(){
 
             var id_country = d3.select(this)
                                .attr("id");
 
-
-            console.log(id_country); // To delete later
-
+            // Return to the original state for map and summary before doing anything
             d3.selectAll(".whisky").transition().style("fill","teal");
 
             var country_summ = whisky_fact.filter(function(d){
@@ -463,9 +475,11 @@
             if(id_country == "sco" || id_country == "eng" || id_country == "wal")
               id_country = "uk";
 
+            // Fill the selected country to red
             d3.selectAll("path#"+id_country)
             .transition().style("fill","red");
 
+            // Clean the texts on summary
             summ.selectAll("#detail").remove();
 
             summ.selectAll("#detail")
@@ -475,7 +489,7 @@
              .attr("x",0)
              .attr("id","detail")
              .text(function(d){return d.Fact;});
-            
+            // Display the country facts on div#summary
         })
 
         // Above is the code for the map and interaction
@@ -629,73 +643,513 @@
     ---------------------Next Chunk Below-----------------------------
     ------------------------------------------------------------------
       */
-
       /*
-        Here is the code for bubble chart
+        Below is the code for bubble chart to count the type of whiskys
+        in the database by couuntry
       */
-      var viz_w = 1200,
-          viz_h = 200;
+      var arr = [{"class": "Select one class"},
+                {"class": "SingleMalt"},
+                {"class": "Bourbon"},
+                {"class": "Rye"},
+                {"class": "Scotch-Like"}]
+                // Declaring the array for the selection in the drop down list
 
-      overallTeamViz(summ_count);
+      var type_all = d3.nest().key(function(d){return d.class;})
+                .rollup(function(d){return d.length;})
+                .entries(arr);
 
-      function overallTeamViz(incomingData) {
-        d3.select("#viz")
-          .append("svg")
-          .attr("width",viz_w)
-          .attr("height",viz_h)
-          .attr("id","viz_base")
+      var types = d3.select("#type_dropdown");
+
+      types.append("select")
+                .selectAll("option")
+                .data(type_all)
+                .enter()
+                .append("option")
+                .attr("value",function(d){return d.key;})
+                .text(function(d){return d.key});
+
+      
+
+      types.on("change", function(){
+
+        var type_selection;
+
+        var bubble_div = d3.select("#bubble");
+
+          type_selection = d3.select(this)
+                    .select("select")
+                    .property("value");
+
+          document.getElementById("bubble").style.display = "block";
+
+          if(type_selection == "SingleMalt"){
+              var bubble_div = d3.select("#bubble");
+              bubble_div.html(null);
+                      width = +bubble_div.attr("width"),
+                      height = +bubble_div.attr("height");
+                      // Define the div for the tooltip
+
+                      var div = d3.select("body").append("div")   
+                      .attr("class", "tooltip")               
+                      .style("opacity", 0);
 
 
-        d3.select("#viz_base")
-          .append("g")
-          .attr("id", "teamsG")
-          .attr("transform", "translate(50,100)")
-          .selectAll("g")
-          .data(incomingData)
-          .enter()
-          .append("g")
-          .attr("class", "overallG")
-          .attr("transform", function (d,i) {return "translate(" + (i * 50) + ", 0)"});
-          
-        var teamG = d3.selectAll("g.overallG");
-          
-        teamG.append("circle")
-              .attr("r", 20)
-              .style("fill", "pink")
-              .style("stroke", "black")
-              .style("stroke-width", "1px");
+                      bubble_div.append("text")
+                      .attr("x", 200)   
+                      .attr("y", -10 )
+                      .attr("dy", "3.5em" )
+                      .attr("text-anchor", "start")  
+                      .style("font-size", "28px")  
+                      .style("font-weight", "bold")
+                      .text("SingleMalt")
 
-        teamG.append("text")
-              .style("text-anchor", "middle")
-              .attr("y", 50)
-              .style("font-size", "10px")
-              .text(function(d) {return d.country});
+                      var pack = d3.pack()
+                      .size([width-150, height])
+                      .padding(1.5);
 
-        var dataKeys = d3.keys(incomingData[0])
-                          .filter(function (el) {return el != "country" && el != "continent"})    
-        
-        
-        d3.select("#controls")
-          .selectAll("button.country")
-          .data(dataKeys).enter()
-          .append("button")
-          .on("click", buttonClick)
-          .html(function(d) {return d});
 
-        function buttonClick(datapoint) {
-          var maxValue = d3.max(incomingData, 
-                            function(d) {return parseFloat(d[datapoint]);
-                          });
-          var radiusScale = d3.scaleLinear().domain([0,maxValue]).range([2,20]);
-          d3.selectAll("g.overallG")
-          .select("circle")
-          .attr("r", function(d) {return Math.log(radiusScale(d[datapoint]))*10;} );
+                      var color = d3.scaleOrdinal()
+                        .domain(single_data.map(function(d){ return d.country;}))
+                        .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+                            '#ffe9a8','#b9bfe3','#fddaec','#cccccc','#ff9900',"#109618", "#990099", "#0099c6", "#dd4477", "#66aa00"]);
 
-        }
+                      var root = d3.hierarchy({children: single_data})
+                        .sum(function(d) { return d.count; })
 
-        
-      }
 
+                      var node = bubble_div.selectAll(".node")
+                        .data(pack(root).leaves())
+                        .enter().append("g")
+                        .attr("class", "node")
+                        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+
+                        node.append("circle")
+                        .attr("id", function(d) { return d.id; })
+                        .attr("r", function(d) { return d.r; })
+                        .style("fill", function(d) { return color(d.data.country); })
+                        .on("mouseover", function(d) {        
+                            div.transition()        
+                            .duration(200)        
+                            .style("opacity", .9);    
+
+                            var duration = 300;
+
+                            single_data.forEach(function(d, i) {
+                                node.transition().duration(duration).delay(i * duration)
+                                .attr("r", d.count);
+                            });
+
+                            div.data(single_data)
+                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
+                            .style("left", (d3.event.pageX) + "px")       
+                            .style("top", (d3.event.pageY-28) + "px");  
+                        })                    
+                        .on("mouseout", function(d) {       
+                            div.transition()        
+                            .duration(500)        
+                            .style("opacity", 0); 
+                        });
+
+
+                        node.data(single_data)
+                        .append("text")
+                        .attr("dy", ".2em")
+                        .style("text-anchor", "middle")
+                        .text(function(d) {
+                            return d.country.substring(0, d.r/5);
+                        })
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", function(d){
+                            return d.r/3.5;
+                        })
+                        .attr("fill", "white");
+
+
+                        var legend = bubble_div.selectAll(".legend")
+                        .data(single_data).enter()
+                        .append("g")
+                        .attr("class","legend")
+                        .attr("transform", "translate(" + 500 + "," + 120+ ")");
+
+
+                        legend.append("rect")
+                        .data(single_data)
+                        .attr("x", 0) 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .attr("width", 15)
+                        .attr("height", 15)
+                        .style("fill", function(d) { return color(d.country)});
+
+                        legend.append("text")
+                        .data(single_data)
+                        .attr("x", 25) 
+                        .attr("text-anchor", "start")
+                        .attr("dy", "1em") 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .text(function(d) {return d.country;})
+                        .attr("font-size", "12px"); 
+
+                        legend.append("text")
+                        .attr("x",31) 
+                        .attr("dy", "-.2em")
+                        .attr("y",-10)
+                        .text("Country")
+                        .attr("font-size", "17px"); 
+
+          } 
+          if(type_selection == "Bourbon"){
+
+              // Define the div for the tooltip
+
+                  var bubble_div = d3.select("#bubble");
+                  bubble_div.html(null);
+
+                  width = +bubble_div.attr("width"),
+                  height = +bubble_div.attr("height");
+                  // Define the div for the tooltip
+
+                  var div = d3.select("body").append("div")   
+                  .attr("class", "tooltip")               
+                  .style("opacity", 0);
+
+                  bubble_div.append("text")
+                  .attr("x", 200)   
+                  .attr("y", -10 )
+                  .attr("dy", "3.5em" )
+                  .attr("text-anchor", "start")  
+                  .style("font-size", "28px")  
+                  .style("font-weight", "bold")
+                  .text("Bourbon")
+
+                  var pack = d3.pack()
+                      .size([width-150, height])
+                      .padding(1.5);
+
+                  var color = d3.scaleOrdinal()
+                        .domain(bourbon_data.map(function(d){ return d.country;}))
+                        .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+                            '#ffe9a8','#b9bfe3','#fddaec','#cccccc','#ff9900',"#109618", "#990099", "#0099c6", "#dd4477", "#66aa00"]);
+
+                      var root = d3.hierarchy({children: bourbon_data})
+                        .sum(function(d) { return d.count; })
+
+
+                      var node = bubble_div.selectAll(".node")
+                        .data(pack(root).leaves())
+                        .enter().append("g")
+                        .attr("class", "node")
+                        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+
+                        node.append("circle")
+                        .attr("id", function(d) { return d.id; })
+                        .attr("r", function(d) { return d.r; })
+                        .style("fill", function(d) { return color(d.data.country); })
+                        .on("mouseover", function(d) {        
+                            div.transition()        
+                            .duration(200)        
+                            .style("opacity", .9);    
+
+                            var duration = 300;
+
+                            bourbon_data.forEach(function(d, i) {
+                                node.transition().duration(duration).delay(i * duration)
+                                .attr("r", d.count);
+                            });
+
+                            div.data(single_data)
+                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
+                            .style("left", (d3.event.pageX) + "px")       
+                            .style("top", (d3.event.pageY-28) + "px");  
+                        })                    
+                        .on("mouseout", function(d) {       
+                            div.transition()        
+                            .duration(500)        
+                            .style("opacity", 0); 
+                        });
+
+
+                        node.data(bourbon_data)
+                        .append("text")
+                        .attr("dy", ".2em")
+                        .style("text-anchor", "middle")
+                        .text(function(d) {
+                            return d.country.substring(0, d.r/5);
+                        })
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", function(d){
+                            return d.r/3.5;
+                        })
+                        .attr("fill", "white");
+
+
+                        var legend = bubble_div.selectAll(".legend")
+                        .data(bourbon_data).enter()
+                        .append("g")
+                        .attr("class","legend")
+                        .attr("transform", "translate(" + 500 + "," + 120+ ")");
+
+
+                        legend.append("rect")
+                        .data(bourbon_data)
+                        .attr("x", 0) 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .attr("width", 15)
+                        .attr("height", 15)
+                        .style("fill", function(d) { return color(d.country)});
+
+                        legend.append("text")
+                        .data(bourbon_data)
+                        .attr("x", 25) 
+                        .attr("text-anchor", "start")
+                        .attr("dy", "1em") 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .text(function(d) {return d.country;})
+                        .attr("font-size", "12px"); 
+
+                        legend.append("text")
+                        .attr("x",31) 
+                        .attr("dy", "-.2em")
+                        .attr("y",-10)
+                        .text("Country")
+                        .attr("font-size", "17px"); 
+
+            }
+            if(type_selection == "Rye"){
+              var bubble_div = d3.select("#bubble");
+              bubble_div.html(null);
+                      width = +bubble_div.attr("width"),
+                      height = +bubble_div.attr("height");
+                      // Define the div for the tooltip
+
+                      var div = d3.select("body").append("div")   
+                      .attr("class", "tooltip")               
+                      .style("opacity", 0);
+
+
+                      bubble_div.append("text")
+                      .attr("x", 200)   
+                      .attr("y", -10 )
+                      .attr("dy", "3.5em" )
+                      .attr("text-anchor", "start")  
+                      .style("font-size", "28px")  
+                      .style("font-weight", "bold")
+                      .text("Rye Whiskey")
+
+                      var pack = d3.pack()
+                      .size([width-150, height])
+                      .padding(1.5);
+
+
+                      var color = d3.scaleOrdinal()
+                        .domain(rye_data.map(function(d){ return d.country;}))
+                        .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+                            '#ffe9a8','#b9bfe3','#fddaec','#cccccc','#ff9900',"#109618", "#990099", "#0099c6", "#dd4477", "#66aa00"]);
+
+                      var root = d3.hierarchy({children: rye_data})
+                        .sum(function(d) { return d.count; })
+
+
+                      var node = bubble_div.selectAll(".node")
+                        .data(pack(root).leaves())
+                        .enter().append("g")
+                        .attr("class", "node")
+                        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+
+                        node.append("circle")
+                        .attr("id", function(d) { return d.id; })
+                        .attr("r", function(d) { return d.r; })
+                        .style("fill", function(d) { return color(d.data.country); })
+                        .on("mouseover", function(d) {        
+                            div.transition()        
+                            .duration(200)        
+                            .style("opacity", .9);    
+
+                            var duration = 300;
+
+                            rye_data.forEach(function(d, i) {
+                                node.transition().duration(duration).delay(i * duration)
+                                .attr("r", d.count);
+                            });
+
+                            div.data(rye_data)
+                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
+                            .style("left", (d3.event.pageX) + "px")       
+                            .style("top", (d3.event.pageY-28) + "px");  
+                        })                    
+                        .on("mouseout", function(d) {       
+                            div.transition()        
+                            .duration(500)        
+                            .style("opacity", 0); 
+                        });
+
+
+                        node.data(rye_data)
+                        .append("text")
+                        .attr("dy", ".2em")
+                        .style("text-anchor", "middle")
+                        .text(function(d) {
+                            return d.country.substring(0, d.r/5);
+                        })
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", function(d){
+                            return d.r/3.5;
+                        })
+                        .attr("fill", "white");
+
+
+                        var legend = bubble_div.selectAll(".legend")
+                        .data(rye_data).enter()
+                        .append("g")
+                        .attr("class","legend")
+                        .attr("transform", "translate(" + 500 + "," + 120+ ")");
+
+
+                        legend.append("rect")
+                        .data(rye_data)
+                        .attr("x", 0) 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .attr("width", 15)
+                        .attr("height", 15)
+                        .style("fill", function(d) { return color(d.country)});
+
+                        legend.append("text")
+                        .data(rye_data)
+                        .attr("x", 25) 
+                        .attr("text-anchor", "start")
+                        .attr("dy", "1em") 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .text(function(d) {return d.country;})
+                        .attr("font-size", "12px"); 
+
+                        legend.append("text")
+                        .attr("x",31) 
+                        .attr("dy", "-.2em")
+                        .attr("y",-10)
+                        .text("Country")
+                        .attr("font-size", "17px"); 
+
+          } 
+          if(type_selection == "Scotch-Like"){
+              var bubble_div = d3.select("#bubble");
+              bubble_div.html(null);
+                      width = +bubble_div.attr("width"),
+                      height = +bubble_div.attr("height");
+                      // Define the div for the tooltip
+
+                      var div = d3.select("body").append("div")   
+                      .attr("class", "tooltip")               
+                      .style("opacity", 0);
+
+
+                      bubble_div.append("text")
+                      .attr("x", 200)   
+                      .attr("y", -10 )
+                      .attr("dy", "3.5em" )
+                      .attr("text-anchor", "start")  
+                      .style("font-size", "28px")  
+                      .style("font-weight", "bold")
+                      .text("Scotch-Like Whisky")
+
+                      var pack = d3.pack()
+                      .size([width-150, height])
+                      .padding(1.5);
+
+
+                      var color = d3.scaleOrdinal()
+                        .domain(scotch_data.map(function(d){ return d.country;}))
+                        .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+                            '#ffe9a8','#b9bfe3','#fddaec','#cccccc','#ff9900',"#109618", "#990099", "#0099c6", "#dd4477", "#66aa00"]);
+
+                      var root = d3.hierarchy({children: scotch_data})
+                        .sum(function(d) { return d.count; })
+
+
+                      var node = bubble_div.selectAll(".node")
+                        .data(pack(root).leaves())
+                        .enter().append("g")
+                        .attr("class", "node")
+                        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+
+
+                        node.append("circle")
+                        .attr("id", function(d) { return d.id; })
+                        .attr("r", function(d) { return d.r; })
+                        .style("fill", function(d) { return color(d.data.country); })
+                        .on("mouseover", function(d) {        
+                            div.transition()        
+                            .duration(200)        
+                            .style("opacity", .9);    
+
+                            var duration = 300;
+
+                            scotch_data.forEach(function(d, i) {
+                                node.transition().duration(duration).delay(i * duration)
+                                .attr("r", d.count);
+                            });
+
+                            div.data(scotch_data)
+                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
+                            .style("left", (d3.event.pageX) + "px")       
+                            .style("top", (d3.event.pageY-28) + "px");  
+                        })                    
+                        .on("mouseout", function(d) {       
+                            div.transition()        
+                            .duration(500)        
+                            .style("opacity", 0); 
+                        });
+
+
+                        node.data(scotch_data)
+                        .append("text")
+                        .attr("dy", ".2em")
+                        .style("text-anchor", "middle")
+                        .text(function(d) {
+                            return d.country.substring(0, d.r/5);
+                        })
+                        .attr("font-family", "sans-serif")
+                        .attr("font-size", function(d){
+                            return d.r/3.5;
+                        })
+                        .attr("fill", "white");
+
+
+                        var legend = bubble_div.selectAll(".legend")
+                        .data(scotch_data).enter()
+                        .append("g")
+                        .attr("class","legend")
+                        .attr("transform", "translate(" + 500 + "," + 120+ ")");
+
+
+                        legend.append("rect")
+                        .data(scotch_data)
+                        .attr("x", 0) 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .attr("width", 15)
+                        .attr("height", 15)
+                        .style("fill", function(d) { return color(d.country)});
+
+                        legend.append("text")
+                        .data(scotch_data)
+                        .attr("x", 25) 
+                        .attr("text-anchor", "start")
+                        .attr("dy", "1em") 
+                        .attr("y", function(d, i) { return 20 * i; })
+                        .text(function(d) {return d.country;})
+                        .attr("font-size", "12px"); 
+
+                        legend.append("text")
+                        .attr("x",31) 
+                        .attr("dy", "-.2em")
+                        .attr("y",-10)
+                        .text("Country")
+                        .attr("font-size", "17px"); 
+
+          } 
+
+      });
 
 
       /*
@@ -706,14 +1160,9 @@
 
       /*
 		Below is the code for suggestion and interaction
-		Using <div> with id="dropdown", "wheel", and "suggestion"
+		Using <div> with id="dropdown" and "suggestion"
 
 		For id="dropdown" is the dropdown list for user to choose a country
-
-		For id="wheel" is a pie-chart-like-wheel on a svg. The pie-chart-like-wheel
-		is called "Character wheel", it is inspired from the character wheel of wine,
-		designed in UC Davis. The idea is that having the user to use key-word and related
-		color to choose a character.
 
 		For id="suggestion", after the user have choose a country and a character, the
 		code will generate a table of list of suggested whisky based on country and
@@ -724,6 +1173,7 @@
 
       
         var col = ["whisky","score","cost","cluster","class","country","type"];
+        // Declare table header
 
         var w_suggestion = 1200,
             h_suggestion = 800;
@@ -735,10 +1185,11 @@
         // Function to generate a table after user has chosen country and character
         var tabulate = function(data,columns){
           var table = suggestion.append("table");
-          var thead = table.append("thead");
-          var tbody = table.append("tbody");
+          var thead = table.append("thead"); // Declare header
+          var tbody = table.append("tbody"); // Declare table cells
 
-          var sortAscending = true;
+          var sortAscending = true; // For sorting the table
+          // This variable is not used until clicking on header 
 
           var headers = thead.append("tr")
                              .selectAll("th")
@@ -763,14 +1214,16 @@
                                   sortAscending = true;
                                   this.className= "des";
                                 }
-
                              });
+          // Build the header
 
           var rows = tbody.selectAll("tr")
                   .data(data)
                   .enter()
                   .append("tr");
+          // Declare the rows
 
+          // Fill in the cells
           var cells = rows.selectAll("td")
                   .data(function(row){
                     return columns.map(function(col){
@@ -790,10 +1243,11 @@
                         else if (temp == 6)
                           str = "$$$$+";
 
-                        // console.log(col + ":" + str); // Delete later
+                        // Return price in to dollar sign instead of integers
                         return {column: col, value: str};
                       }
                       else if (col == "cluster"){
+                        // Return cluster to readable characters for users
                       	var temp = row[col];
                       	var str;
                       	if (temp == "A")
@@ -994,7 +1448,6 @@
         // Interaction for user to select country and flavor to filter
         // Default selection to Scotland
         var selectedCountry = "Scotland";
-        console.log(selectedCountry);
 
         var selectedFlavor; // Declare selectedFlavor to store character
 
@@ -1004,8 +1457,6 @@
             selectedCountry = d3.select(this)
                       			.select("select")
                       			.property("value");
-
-            console.log(selectedCountry); // To delete later
 
             if(selectedCountry == "USA"){
             	document.getElementById("rye_contain").style.display = "block";
@@ -1021,12 +1472,9 @@
           .selectAll(".flavor")
           .on("click",function(d){
             selectedFlavor = d3.select(this).attr("id");
-            console.log(selectedCountry); // To delete later
-            console.log(selectedFlavor); // To delete later
 
             // To filter the list based on selected country and flavor
             var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor,"all");
-            console.log(whisky_list);
             // To remove the table if there is a table existed in id="suggestion"
             d3.selectAll("#suggestion").selectAll("table").remove();
             d3.selectAll("#suggestion").selectAll("p").remove();
@@ -1040,16 +1488,14 @@
              	   .text(function(col){return col.charAt(0).toUpperCase()+col.substr(1);});
         }); // End event on selecting character
 
+        // Only pop out if USA is chosen
         d3.select("#rye_contain")
           .selectAll(".rye")
           .on("click",function(d){
             selectedFlavor = d3.select(this).attr("id");
-            console.log(selectedCountry); // To delete later
-            console.log(selectedFlavor); // To delete later
 
             // To filter the list based on selected country and flavor
             var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor,"all");
-            console.log(whisky_list);
             // To remove the table if there is a table existed in id="suggestion"
             d3.selectAll("#suggestion").selectAll("table").remove();
             d3.selectAll("#suggestion").selectAll("p").remove();
@@ -1067,12 +1513,8 @@
           .selectAll(".bud")
           .on("click",function(d){
           		var budget = d3.select(this).attr("id");
-          		console.log(budget);
-          		console.log(selectedCountry); // To delete later
-            	console.log(selectedFlavor);
             	var whisky_list = filteredList(whisky_data,selectedCountry,selectedFlavor,budget);
 
-          		console.log(whisky_list);
           		d3.selectAll("#suggestion").selectAll("table").remove();
             	d3.selectAll("#suggestion").selectAll("p").remove();
           		var table = tabulate(whisky_list,col);
