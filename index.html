@@ -275,6 +275,7 @@
     <div id="type_dropdown" style="height:50px;"></div>
     <p>You may point at the bubble to see the numbers of whiskies/whiskeys of the country</p>
     <svg id="bubble" width="700" height="800" font-family="sans-serif" font-size="10" text-anchor="middle" style="display:none"></svg>
+    <div id="type_explain" style="width:500px;height:100px"></div>
     <hr>
     <h2> A bottle of whisky for you?</h2>
     <p> To find a bottle of whisky for you. First, select the country from the drop down list. Second, select a desired character. Then, we will generate a list of whisky of our suggestion.</p></center>
@@ -708,129 +709,134 @@
       types.on("change", function(){
 
         var type_selection;
-
         var bubble_div = d3.select("#bubble");
-
-          type_selection = d3.select(this)
+        var explain_div = d3.select("#type_explain");
+        type_selection = d3.select(this)
                     .select("select")
                     .property("value");
 
-          document.getElementById("bubble").style.display = "block";
+        document.getElementById("bubble").style.display = "block";
 
-          if(type_selection == "SingleMalt"){
-              var bubble_div = d3.select("#bubble");
-              bubble_div.html(null);
-                      width = +bubble_div.attr("width"),
-                      height = +bubble_div.attr("height");
-                      // Define the div for the tooltip
+        if(type_selection == "SingleMalt"){
+            var bubble_div = d3.select("#bubble");
+            bubble_div.html(null);
+            width = +bubble_div.attr("width"),
+            height = +bubble_div.attr("height");
+            // Declare the size of svg
 
-                      var div = d3.select("body").append("div")   
-                      .attr("class", "tooltip")               
-                      .style("opacity", 0);
+            bubble_div.append("text")
+            .attr("x", 200)   
+            .attr("y", -10 )
+            .attr("dy", "3.5em" )
+            .attr("text-anchor", "start")  
+            .style("font-size", "28px")  
+            .style("font-weight", "bold")
+            .text("SingleMalt")
+            // Put the title of this selection
 
-
-                      bubble_div.append("text")
-                      .attr("x", 200)   
-                      .attr("y", -10 )
-                      .attr("dy", "3.5em" )
-                      .attr("text-anchor", "start")  
-                      .style("font-size", "28px")  
-                      .style("font-weight", "bold")
-                      .text("SingleMalt")
-
-                      var pack = d3.pack()
-                      .size([width-150, height])
-                      .padding(1.5);
+            var pack = d3.pack()
+            .size([width-150, height])
+            .padding(1.5);
 
 
-                      var color = d3.scaleOrdinal()
-                        .domain(single_data.map(function(d){ return d.country;}))
-                        .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
-                            '#ffe9a8','#b9bfe3','#fddaec','#cccccc','#ff9900',"#109618", "#990099", "#0099c6", "#dd4477", "#66aa00"]);
+            var color = d3.scaleOrdinal()
+              .domain(single_data.map(function(d){ return d.country;}))
+              .range(['#fbb4ae','#b3cde3','#ccebc5','#decbe4','#fed9a6',
+                  '#ffe9a8','#b9bfe3','#fddaec','#cccccc','#ff9900',"#109618", "#990099", "#0099c6", "#dd4477", "#66aa00"]);
+            // Delcare colors
 
-                      var root = d3.hierarchy({children: single_data})
-                        .sum(function(d) { return d.count; })
-
-
-                      var node = bubble_div.selectAll(".node")
-                        .data(pack(root).leaves())
-                        .enter().append("g")
-                        .attr("class", "node")
-                        .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            var root = d3.hierarchy({children: single_data})
+              .sum(function(d) { return d.count; })
+            // Declare root for bubble chart
 
 
-                        node.append("circle")
-                        .attr("id", function(d) { return d.id; })
-                        .attr("r", function(d) { return d.r; })
-                        .style("fill", function(d) { return color(d.data.country); })
-                        .on("mouseover", function(d) {        
-                            div.transition()        
-                            .duration(200)        
-                            .style("opacity", .9);    
+            var node = bubble_div.selectAll(".node")
+              .data(pack(root).leaves())
+              .enter().append("g")
+              .attr("class", "node")
+              .attr("transform", function(d) { return "translate(" + d.x + "," + d.y + ")"; });
+            // Calculate the position of each circle
 
-                            var duration = 300;
+            // Draw circles
+            node.append("circle")
+            .attr("r", function(d) { return d.r; })
+            .attr("id",function(d){return d.data.country;})
+            .style("fill", function(d) { return color(d.data.country); })
+            .on("mouseover", function(d) {   
+            // Mouseover to display the whisky count of that country     
 
-                            single_data.forEach(function(d, i) {
-                                node.transition().duration(duration).delay(i * duration)
-                                .attr("r", d.count);
-                            });
+                var duration = 300;
 
-                            div.data(single_data)
-                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
-                            .style("left", (d3.event.pageX) + "px")       
-                            .style("top", (d3.event.pageY-28) + "px");  
-                        })                    
-                        .on("mouseout", function(d) {       
-                            div.transition()        
-                            .duration(500)        
-                            .style("opacity", 0); 
-                        });
+                single_data.forEach(function(d, i) {
+                    node.transition().duration(duration).delay(i * duration)
+                    .attr("r", d.count);
+                });
 
+                var choice = d3.select(this).attr("id")
 
-                        node.data(single_data)
-                        .append("text")
-                        .attr("dy", ".2em")
-                        .style("text-anchor", "middle")
-                        .text(function(d) {
-                            return d.country.substring(0, d.r/5);
-                        })
-                        .attr("font-family", "sans-serif")
-                        .attr("font-size", function(d){
-                            return d.r/3.5;
-                        })
-                        .attr("fill", "white");
+                filtered = single_data.filter(function(d){
+                  return (d.country == choice);
+                }); // Obtain the number
 
-
-                        var legend = bubble_div.selectAll(".legend")
-                        .data(single_data).enter()
-                        .append("g")
-                        .attr("class","legend")
-                        .attr("transform", "translate(" + 500 + "," + 120+ ")");
+                explain_div.selectAll("p") // Display on the below div
+                     .data(filtered)
+                     .enter()
+                     .append("p")
+                     .attr("x",0)
+                     .text(function(d){
+                      return d.country+": "+d.count+" bottle(s)";
+                     })
+                     .style("font-size", "20px");
+                })                    
+                .on("mouseout", function(d) {       
+                    explain_div.selectAll("p").remove();
+                });
 
 
-                        legend.append("rect")
-                        .data(single_data)
-                        .attr("x", 0) 
-                        .attr("y", function(d, i) { return 20 * i; })
-                        .attr("width", 15)
-                        .attr("height", 15)
-                        .style("fill", function(d) { return color(d.country)});
+                node.data(single_data)
+                .append("text")
+                .attr("dy", ".2em")
+                .style("text-anchor", "middle")
+                .text(function(d) {
+                    return d.country.substring(0, d.r/5);
+                })
+                .attr("font-family", "sans-serif")
+                .attr("font-size", function(d){
+                    return d.r/3.5;
+                })
+                .attr("fill", "white");
 
-                        legend.append("text")
-                        .data(single_data)
-                        .attr("x", 25) 
-                        .attr("text-anchor", "start")
-                        .attr("dy", "1em") 
-                        .attr("y", function(d, i) { return 20 * i; })
-                        .text(function(d) {return d.country;})
-                        .attr("font-size", "12px"); 
 
-                        legend.append("text")
-                        .attr("x",31) 
-                        .attr("dy", "-.2em")
-                        .attr("y",-10)
-                        .text("Country")
-                        .attr("font-size", "17px"); 
+                var legend = bubble_div.selectAll(".legend")
+                .data(single_data).enter()
+                .append("g")
+                .attr("class","legend")
+                .attr("transform", "translate(" + 500 + "," + 120+ ")");
+
+
+                legend.append("rect")
+                .data(single_data)
+                .attr("x", 0) 
+                .attr("y", function(d, i) { return 20 * i; })
+                .attr("width", 15)
+                .attr("height", 15)
+                .style("fill", function(d) { return color(d.country)});
+
+                legend.append("text")
+                .data(single_data)
+                .attr("x", 25) 
+                .attr("text-anchor", "start")
+                .attr("dy", "1em") 
+                .attr("y", function(d, i) { return 20 * i; })
+                .text(function(d) {return d.country;})
+                .attr("font-size", "12px"); 
+
+                legend.append("text")
+                .attr("x",31) 
+                .attr("dy", "-.2em")
+                .attr("y",-10)
+                .text("Country")
+                .attr("font-size", "17px"); 
 
           } 
           if(type_selection == "Bourbon"){
@@ -844,9 +850,6 @@
                   height = +bubble_div.attr("height");
                   // Define the div for the tooltip
 
-                  var div = d3.select("body").append("div")   
-                  .attr("class", "tooltip")               
-                  .style("opacity", 0);
 
                   bubble_div.append("text")
                   .attr("x", 200)   
@@ -878,30 +881,31 @@
 
 
                         node.append("circle")
-                        .attr("id", function(d) { return d.id; })
+                        .attr("id",function(d){return d.data.country;})
                         .attr("r", function(d) { return d.r; })
                         .style("fill", function(d) { return color(d.data.country); })
                         .on("mouseover", function(d) {        
-                            div.transition()        
-                            .duration(200)        
-                            .style("opacity", .9);    
-
+                           
                             var duration = 300;
 
-                            bourbon_data.forEach(function(d, i) {
-                                node.transition().duration(duration).delay(i * duration)
-                                .attr("r", d.count);
-                            });
+                            var choice = d3.select(this).attr("id")
 
-                            div.data(single_data)
-                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
-                            .style("left", (d3.event.pageX) + "px")       
-                            .style("top", (d3.event.pageY-28) + "px");  
+                            filtered = bourbon_data.filter(function(d){
+                              return (d.country == choice);
+                            }); // Obtain the number
+
+                            explain_div.selectAll("p") // Display on the below div
+                                 .data(filtered)
+                                 .enter()
+                                 .append("p")
+                                 .attr("x",0)
+                                 .text(function(d){
+                                  return d.country+": "+d.count+" bottle(s)";
+                                 })
+                                 .style("font-size", "20px");  
                         })                    
                         .on("mouseout", function(d) {       
-                            div.transition()        
-                            .duration(500)        
-                            .style("opacity", 0); 
+                            explain_div.selectAll("p").remove();
                         });
 
 
@@ -994,30 +998,30 @@
 
 
                         node.append("circle")
-                        .attr("id", function(d) { return d.id; })
+                        .attr("id", function(d) { return d.data.country; })
                         .attr("r", function(d) { return d.r; })
                         .style("fill", function(d) { return color(d.data.country); })
                         .on("mouseover", function(d) {        
-                            div.transition()        
-                            .duration(200)        
-                            .style("opacity", .9);    
-
                             var duration = 300;
 
-                            rye_data.forEach(function(d, i) {
-                                node.transition().duration(duration).delay(i * duration)
-                                .attr("r", d.count);
-                            });
+                            var choice = d3.select(this).attr("id")
 
-                            div.data(rye_data)
-                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
-                            .style("left", (d3.event.pageX) + "px")       
-                            .style("top", (d3.event.pageY-28) + "px");  
+                            filtered = rye_data.filter(function(d){
+                              return (d.country == choice);
+                            }); // Obtain the number
+
+                            explain_div.selectAll("p") // Display on the below div
+                                 .data(filtered)
+                                 .enter()
+                                 .append("p")
+                                 .attr("x",0)
+                                 .text(function(d){
+                                  return d.country+": "+d.count+" bottle(s)";
+                                 })
+                                 .style("font-size", "20px");
                         })                    
                         .on("mouseout", function(d) {       
-                            div.transition()        
-                            .duration(500)        
-                            .style("opacity", 0); 
+                            explain_div.selectAll("p").remove();
                         });
 
 
@@ -1110,30 +1114,28 @@
 
 
                         node.append("circle")
-                        .attr("id", function(d) { return d.id; })
+                        .attr("id", function(d) { return d.data.country;; })
                         .attr("r", function(d) { return d.r; })
                         .style("fill", function(d) { return color(d.data.country); })
                         .on("mouseover", function(d) {        
-                            div.transition()        
-                            .duration(200)        
-                            .style("opacity", .9);    
+                            var choice = d3.select(this).attr("id")
 
-                            var duration = 300;
+                            filtered = scotch_data.filter(function(d){
+                              return (d.country == choice);
+                            }); // Obtain the number
 
-                            scotch_data.forEach(function(d, i) {
-                                node.transition().duration(duration).delay(i * duration)
-                                .attr("r", d.count);
-                            });
-
-                            div.data(scotch_data)
-                            .html(d.data.country + ": <br>"+ "total: " + d.data.count)    
-                            .style("left", (d3.event.pageX) + "px")       
-                            .style("top", (d3.event.pageY-28) + "px");  
+                            explain_div.selectAll("p") // Display on the below div
+                                 .data(filtered)
+                                 .enter()
+                                 .append("p")
+                                 .attr("x",0)
+                                 .text(function(d){
+                                  return d.country+": "+d.count+" bottle(s)";
+                                 })
+                                 .style("font-size", "20px");
                         })                    
                         .on("mouseout", function(d) {       
-                            div.transition()        
-                            .duration(500)        
-                            .style("opacity", 0); 
+                            explain_div.selectAll("p").remove();
                         });
 
 
